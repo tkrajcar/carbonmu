@@ -7,7 +7,6 @@ require_all 'lib'
 
 module CarbonMU
   def self.start
-    Server.new 'localhost', 8421
-    loop { }
+    SupervisionGroup.run
   end
 end
