@@ -24,17 +24,7 @@ module CarbonMU
     end
 
     def handle_connection(socket)
-      _, port, host = socket.peeraddr
-      puts "*** Received connection from #{host}:#{port}"
-      c = ConnectionManager.add(socket)
-      loop do
-        buf = c.read
-        Notify.all("#{socket.addr[2]} said: #{buf}")
-      end
-    rescue EOFError
-      puts "*** #{host}:#{port} disconnected"
-      c.close
-      ConnectionManager.remove(c)
+      ConnectionManager.add(socket)
     end
   end
 end
