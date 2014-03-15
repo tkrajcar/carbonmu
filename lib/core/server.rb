@@ -6,15 +6,12 @@ module CarbonMU
     include Celluloid::IO
     finalizer :shutdown
 
-    attr_reader :sockets
-
     def initialize(host, port)
       puts "*** Starting server on #{host}:#{port}"
 
       # Since we included Celluloid::IO, we're actually making a
       # Celluloid::IO::TCPServer here
       @server = TCPServer.new(host, port)
-      @sockets  = []
       async.run
     end
 
@@ -29,17 +26,15 @@ module CarbonMU
     def handle_connection(socket)
       _, port, host = socket.peeraddr
       puts "*** Received connection from #{host}:#{port}"
-      @sockets << socket
+      c = ConnectionManager.add(socket)
       loop do
-        buf = socket.readpartial(4096)
-        @sockets.each do |s|
-          s.write "#{socket.addr[2]} said: #{buf}"
-        end
+        buf = c.read
+        Notify.all("#{socket.addr[2]} said: #{buf}")
       end
     rescue EOFError
       puts "*** #{host}:#{port} disconnected"
-      socket.close
-      @sockets.delete(socket)
+      c.close
+      ConnectionManager.remove(c)
     end
   end
 end
