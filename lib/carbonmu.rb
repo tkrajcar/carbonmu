@@ -1,10 +1,13 @@
 require 'rubygems'
-require 'bundler/setup'
+require 'bundler'
+Bundler.setup(:default)
 
 require 'require_all'
-require_all '.'
+require_all 'lib'
 
 module CarbonMU
-  Server.new 'localhost', 8421
-  loop { }
+  def self.start
+    Server.new 'localhost', 8421
+    loop { }
+  end
 end
