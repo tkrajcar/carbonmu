@@ -8,12 +8,10 @@ module CarbonMU
 
     def initialize(socket)
       @socket = socket
-      _, port, host = socket.peeraddr
-      puts "*** Received connection from #{host}:#{port}"
-      async.run
     end
 
     def run
+      puts "*** Received connection from #{socket.addr[2]}"
       loop do
         buf = read
         Notify.all("#{socket.addr[2]} said: #{buf}")

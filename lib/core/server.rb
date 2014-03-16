@@ -24,7 +24,8 @@ module CarbonMU
     end
 
     def handle_connection(socket)
-      ConnectionManager.add(socket)
+      c = ConnectionManager.add(socket)
+      c.async.run
     end
   end
 end
