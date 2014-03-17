@@ -1,6 +1,6 @@
 
 module CarbonMU
-  class ConnectionManager
+  module ConnectionManager
     @@connections = []
 
     def self.add(socket)
