@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+# Console for testing. TODO replace me with a proper cli.
+
+require './lib/carbonmu.rb'
+require 'awesome_print'
+require 'pry'
+
+Pry.start CarbonMU

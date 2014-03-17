@@ -1,6 +1,5 @@
 require 'rubygems'
-require 'bundler'
-Bundler.setup(:default)
+require 'bundler/setup'
 
 require 'require_all'
 require_all 'lib'
