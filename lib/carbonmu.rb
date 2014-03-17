@@ -9,4 +9,8 @@ module CarbonMU
   def self.start
     SupervisionGroup.run
   end
+
+  def self.start_in_background
+    SupervisionGroup.run!
+  end
 end
