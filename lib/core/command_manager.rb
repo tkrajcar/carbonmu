@@ -1,13 +1,13 @@
 module CarbonMU
   module CommandManager
     def self.register_command(command, klass)
-      raise NoMethodError, "#{klass} doesn't define #{command}" unless klass.respond_to? "cmd_#{command}"
-      @@commands ||= {}
-      @@commands[command.to_sym] = {klass: klass}
+      raise NoMethodError, "#{klass} doesn't define cmd_#{command}" unless klass.respond_to? "cmd_#{command}"
+      @commands ||= {}
+      @commands[command.to_sym] = {klass: klass}
     end
 
     def self.commands
-      @@commands || {}
+      @commands || {}
     end
 
     def self.execute(command, *args)
