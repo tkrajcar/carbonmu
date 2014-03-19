@@ -13,6 +13,10 @@ describe Command do
       CommandManager.should_receive(:add).with(:test, anything)
       TestCommand.command do; "Pass"; end
     end
+
+    it "raises ArgumentError if you don't pass a block" do
+      expect { TestCommand.command }.to raise_error(ArgumentError)
+    end
   end
 
   context "#syntax" do
