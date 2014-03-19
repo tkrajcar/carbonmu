@@ -22,7 +22,7 @@ describe CommandManager do
     end
 
     it "dispatches a good command to the Proc" do
-      TestCommand.register_command :testing_good_command do; "Pass"; end
+      TestCommand.command :testing_good_command do; "Pass"; end
       subject.commands[:testing_good_command][:block].should_receive(:call)
       context = double("CommandContext")
       subject.execute("testing_good_command", context)
