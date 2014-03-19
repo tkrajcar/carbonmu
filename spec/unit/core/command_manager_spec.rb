@@ -8,7 +8,7 @@ describe CommandManager do
   context '#add' do
     it 'registers and stores a Proc' do
       subject.add :test_command_manager do; "Foo"; end
-      subject.commands[:test_command_manager].should be_a(Proc)
+      subject.commands[:test_command_manager][:block].should be_a(Proc)
     end
   end
 
@@ -19,9 +19,9 @@ describe CommandManager do
       subject.execute("DEFINITELY_NEVER_GOING_TO_BE_A_GOOD_COMMAND", context)
     end
 
-    it "dispatches a good command" do
+    it "dispatches a good command to the Proc" do
       load_rel 'fixtures/test_parser_command.rb'
-      subject.commands[:testing_parser_command].should_receive(:call)
+      subject.commands[:testing_parser_command][:block].should_receive(:call)
       context = double("CommandContext")
       subject.execute("testing_parser_command", context)
     end
