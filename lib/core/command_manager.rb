@@ -18,7 +18,7 @@ module CarbonMU
       command_prefix = full_command.split(" ")[0].to_sym
 
       if command = CommandManager.commands[command_prefix]
-        command_context.instance_eval &(command[:block])
+        command_context.instance_eval &command[:block]
       else
         # TODO handle a bad command
         Notify.all("bad command #{full_command}")

@@ -6,13 +6,16 @@ module CarbonMU
     finalizer :shutdown
 
     attr_reader :socket
+    attr_reader :id
 
     def initialize(socket)
       @socket = socket
+      @id = SecureRandom.uuid
     end
 
     def run
-      info "*** Received connection from #{socket.addr[2]}"
+      info "*** Received connection #{id} from #{socket.addr[2]}"
+      write "Connected. Your ID is #{id}\n"
       loop do
         buf = read
         command_context = CommandContext.new(self)
