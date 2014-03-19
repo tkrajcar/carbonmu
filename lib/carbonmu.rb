@@ -5,14 +5,13 @@ require 'require_all'
 require_all 'lib'
 
 module CarbonMU
-  @@configuration = Configuration.new
-
-  def self.configuration; @@configuration; end
-  
-  def self.configuration=(config); @@configuration = config; end
+  class << self
+    attr_accessor :configuration
+  end
+  self.configuration = Configuration.new
 
   def self.configure
-    yield @@configuration
+    yield self.configuration
   end
 
   def self.start
