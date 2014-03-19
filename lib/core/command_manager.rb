@@ -5,6 +5,11 @@ module CarbonMU
       @commands[prefix.to_sym] = { block: block }.merge(options)
     end
 
+    def self.add_syntax(command_name, syntax)
+      @commands[command_name][:syntax] ||= []
+      @commands[command_name][:syntax] << syntax
+    end
+
     def self.commands
       @commands || {}
     end

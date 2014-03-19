@@ -14,6 +14,24 @@ describe CommandManager do
     end
   end
 
+  context "#add_syntax" do
+    it "stores a syntax" do
+      subject.add :test_syntax_storage do; "Foo"; end
+      matcher = /foo/
+      subject.add_syntax :test_syntax_storage, matcher
+      subject.commands[:test_syntax_storage][:syntax].should eq([matcher])
+    end
+
+    it "stores multiple syntaxes in order received" do
+      subject.add :test_multi_syntax_storage do; "Foo"; end
+      matcher1 = /foo/
+      matcher2 = /bar/
+      subject.add_syntax :test_multi_syntax_storage, matcher1
+      subject.add_syntax :test_multi_syntax_storage, matcher2
+      subject.commands[:test_multi_syntax_storage][:syntax].should eq([matcher1, matcher2])
+    end
+  end
+
   context '#execute' do
     it "handles a bad command" do
       Notify.should_receive(:all) #TODO

@@ -3,5 +3,7 @@ module CarbonMU
     command :say do
       Notify.all("It speaked!")
     end
+
+    syntax :say, /TODO/
   end
 end
