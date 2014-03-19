@@ -1,6 +1,7 @@
 module CarbonMU
   class Connection
     include Celluloid::IO
+    include Celluloid::Logger
 
     finalizer :shutdown
 
@@ -11,13 +12,13 @@ module CarbonMU
     end
 
     def run
-      puts "*** Received connection from #{socket.addr[2]}"
+      info "*** Received connection from #{socket.addr[2]}"
       loop do
         buf = read
         Notify.all("#{socket.addr[2]} said: #{buf}")
       end
     rescue EOFError
-      puts "*** #{socket.addr[2]} disconnected"
+      info "*** #{socket.addr[2]} disconnected"
       close
       ConnectionManager.remove(Celluloid::Actor.current)
     end

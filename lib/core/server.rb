@@ -4,10 +4,11 @@ require 'celluloid/io'
 module CarbonMU
   class Server
     include Celluloid::IO
+    include Celluloid::Logger
     finalizer :shutdown
 
     def initialize(host, port)
-      puts "*** Starting server on #{host}:#{port}"
+      info "*** Starting server on #{host}:#{port}"
 
       # Since we included Celluloid::IO, we're actually making a
       # Celluloid::IO::TCPServer here
