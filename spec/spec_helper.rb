@@ -9,6 +9,9 @@ require_relative '../lib/carbonmu.rb'
 require 'pry'
 
 include CarbonMU
+CarbonMU.configure do |c|
+  c.logger = Logger.new(nil)
+end
 
 RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true
