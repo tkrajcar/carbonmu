@@ -41,8 +41,8 @@ describe CommandManager do
 
     it "dispatches a good command to the Proc" do
       TestCommand.command :testing_good_command do; "Pass"; end
-      subject.commands[:testing_good_command][:block].should_receive(:call)
       context = double("CommandContext")
+      context.should_receive(:instance_eval).and_yield
       subject.execute("testing_good_command", context)
     end
   end
