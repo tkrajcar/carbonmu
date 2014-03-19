@@ -1,5 +1,7 @@
 require 'spec_helper'
 
+class TestCommand < Command; end
+
 describe CommandManager do
   it 'prevents instantiation' do
     expect { subject.new }.to raise_error(NoMethodError)
@@ -20,10 +22,10 @@ describe CommandManager do
     end
 
     it "dispatches a good command to the Proc" do
-      load_rel 'fixtures/test_parser_command.rb'
-      subject.commands[:testing_parser_command][:block].should_receive(:call)
+      TestCommand.register_command :testing_good_command do; "Pass"; end
+      subject.commands[:testing_good_command][:block].should_receive(:call)
       context = double("CommandContext")
-      subject.execute("testing_parser_command", context)
+      subject.execute("testing_good_command", context)
     end
   end
 end
