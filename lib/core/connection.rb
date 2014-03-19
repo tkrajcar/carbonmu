@@ -14,7 +14,8 @@ module CarbonMU
       puts "*** Received connection from #{socket.addr[2]}"
       loop do
         buf = read
-        Notify.all("#{socket.addr[2]} said: #{buf}")
+        command_context = CommandContext.new(enactor: self)
+        Parser.parse(buf, command_context)
       end
     rescue EOFError
       puts "*** #{socket.addr[2]} disconnected"
