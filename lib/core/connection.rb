@@ -1,8 +1,12 @@
+require 'forwardable'
+
 module CarbonMU
   class Connection
+    extend Forwardable
+    def_delegators :@socket, :close, :write
+
     include Celluloid::IO
     include Celluloid::Logger
-
     finalizer :shutdown
 
     attr_accessor :name
@@ -11,6 +15,7 @@ module CarbonMU
     def initialize(socket)
       @socket = socket
       @id = SecureRandom.uuid
+      @state = nil
     end
 
     def finalize
@@ -31,16 +36,10 @@ module CarbonMU
       ConnectionManager.remove(Celluloid::Actor.current)
     end
 
-    def close
-      @socket.close
-    end
+    private
 
     def read
       @socket.readpartial(4096)
-    end
-
-    def write(text)
-      @socket.write(text)
     end
 
     def shutdown
