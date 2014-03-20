@@ -2,6 +2,7 @@ source 'https://rubygems.org/'
 
 gem "celluloid-io", "~> 0.15.0"
 gem "require_all"
+gem "state_machine"
 
 group :development do
   gem "awesome_print"

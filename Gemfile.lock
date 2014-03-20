@@ -35,6 +35,7 @@ GEM
       simplecov-html (~> 0.8.0)
     simplecov-html (0.8.0)
     slop (3.5.0)
+    state_machine (1.2.0)
     timers (1.1.0)
 
 PLATFORMS
@@ -48,3 +49,4 @@ DEPENDENCIES
   rake
   require_all
   rspec
+  state_machine
