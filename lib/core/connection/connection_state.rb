@@ -8,7 +8,7 @@ module CarbonMU
       end
 
       def handle_input(input)
-        raise StandardError.new("Not implemented!")
+        raise NotImplementedError
       end
     end
 
