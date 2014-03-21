@@ -17,6 +17,6 @@ shared_examples 'a ConnectionState subclass' do
   it 'implements #handle_input' do
     expect {
       subject.handle_input('Hello World!')
-    }.not_to raise_error
+    }.to implement_method
   end
 end
