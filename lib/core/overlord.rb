@@ -29,5 +29,10 @@ module CarbonMU
     def shutdown
       # TODO Tell all receptors and connections to quit.
     end
+
+    def reboot_server
+      info "Rebooting..."
+      Actor[:server].async.reboot_signal
+    end
   end
 end

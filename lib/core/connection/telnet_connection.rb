@@ -16,7 +16,7 @@ module CarbonMU
       info "*** Received telnet connection #{id} from #{socket.addr[2]}"
       write "Connected. Your ID is #{id}\n"
       loop do
-        handle_input(read)
+        async.handle_input(read)
       end
     rescue EOFError, Errno::ECONNRESET
       info "*** Telnet connection #{id} disconnected"

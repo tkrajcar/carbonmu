@@ -24,5 +24,13 @@ module CarbonMU
       context = CommandContext.new(connection)
       Parser.parse(input, context)
     end
+
+    def self.reboot
+      Actor[:overlord].reboot_server
+    end
+
+    def reboot_signal
+      raise Error, "Rebooting... " # TODO replace this and all overlord<>server comms with real IPC so that code gets autoloaded.
+    end
   end
 end
