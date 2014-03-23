@@ -14,7 +14,7 @@ module CarbonMU
     end
 
     def handle_input(input)
-      Actor[:server].handle_input(buf, Actor.current)
+      Actor[:server].handle_input(input, Actor.current)
     end
 
     def run
