@@ -29,10 +29,11 @@ module CarbonMU
       info "*** #{id} disconnected"
       close
       Actor[:overlord].remove_connection(Actor.current)
+      terminate
     end
 
     def shutdown
-      @socket.close if @socket
+      @socket.close unless @socket.closed?
     end
 
     def read
