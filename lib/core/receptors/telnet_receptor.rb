@@ -2,17 +2,15 @@ require 'celluloid/autostart'
 require 'celluloid/io'
 
 module CarbonMU
-  class Server
+  class TelnetReceptor
     include Celluloid::IO
     include Celluloid::Logger
+
     finalizer :shutdown
 
     def initialize(host, port)
-      info "*** Starting server on #{host}:#{port}"
-
-      # Since we included Celluloid::IO, we're actually making a
-      # Celluloid::IO::TCPServer here
-      @server = TCPServer.new(host, port)
+      info "*** Starting Telnet receptor on #{host} #{port}."
+      @server = Celluloid::IO::TCPServer.new(host, port)
       async.run
     end
 
@@ -25,8 +23,10 @@ module CarbonMU
     end
 
     def handle_connection(socket)
-      c = ConnectionManager.add(socket)
-      c.async.run
+      tc = TelnetConnection.new(socket)
+      Actor[:overlord].add_connection(tc)
+      #tc.async.run
+      #c.async.run
     end
   end
 end
