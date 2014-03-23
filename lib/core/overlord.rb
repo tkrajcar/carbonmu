@@ -21,8 +21,13 @@ module CarbonMU
       Actor[:server].add_connection(connection)
     end
 
+    def remove_connection(connection)
+      @connections.delete(connection)
+      Actor[:server].remove_connection(connection)
+    end
+
     def shutdown
-      # TODO Tell all receptors to quit.
+      # TODO Tell all receptors and connections to quit.
     end
   end
 end

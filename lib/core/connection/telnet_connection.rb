@@ -25,10 +25,10 @@ module CarbonMU
         buf = @socket.read
         Actor[:server].handle_input(buf, Actor.current)
       end
-    rescue EOFError
-      info "*** #{socket.addr[2]} disconnected"
+    rescue EOFError, Errno::ECONNRESET
+      info "*** #{id} disconnected"
       close
-      # unregister
+      Actor[:overlord].remove_connection(Actor.current)
     end
 
     def shutdown
