@@ -1,39 +1,32 @@
 require 'forwardable'
 
 module CarbonMU
-  class TelnetConnection
+  class TelnetConnection < Connection
     extend Forwardable
     def_delegators :@socket, :close, :write
 
-    include Celluloid::IO
-    include Celluloid::Logger
-    finalizer :shutdown
-
-    attr_accessor :name
-    attr_reader :socket, :id
+    attr_reader :socket
 
     def initialize(socket)
       @socket = socket
-      @id = SecureRandom.uuid
-      async.run
+      super()
     end
 
     def run
-      info "*** Received connection #{id} from #{socket.addr[2]}"
+      info "*** Received telnet connection #{id} from #{socket.addr[2]}"
       write "Connected. Your ID is #{id}\n"
       loop do
-        buf = @socket.read
-        Actor[:server].handle_input(buf, Actor.current)
+        handle_input(read)
       end
     rescue EOFError, Errno::ECONNRESET
-      info "*** #{id} disconnected"
+      info "*** Telnet connection #{id} disconnected"
       close
-      Actor[:overlord].remove_connection(Actor.current)
       terminate
     end
 
     def shutdown
       @socket.close unless @socket.closed?
+      super
     end
 
     def read
