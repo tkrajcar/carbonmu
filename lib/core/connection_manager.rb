@@ -3,8 +3,7 @@ module CarbonMU
   module ConnectionManager
     @@connections = []
 
-    def self.add(socket)
-      c = Connection.new(socket)
+    def self.add(c)
       @@connections << c
       c
     end

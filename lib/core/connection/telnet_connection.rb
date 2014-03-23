@@ -23,7 +23,7 @@ module CarbonMU
       write "Connected. Your ID is #{id}\n"
       loop do
         buf = @socket.read
-        Actor[:server].parse_input(buf, Celluloid::Actor.current)
+        Actor[:server].handle_input(buf, Actor.current)
       end
     rescue EOFError
       info "*** #{socket.addr[2]} disconnected"
