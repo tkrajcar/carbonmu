@@ -14,14 +14,13 @@ module CarbonMU
       @commands || {}
     end
 
-    def self.execute(full_command, command_context)
-      command_prefix = full_command.split(" ")[0].to_sym
-
+    def self.execute(command_context)
+      command_prefix = command_context.command.split(" ")[0].to_sym
       if command = CommandManager.commands[command_prefix]
         command_context.instance_eval &command[:block]
       else
         # TODO handle a bad command
-        Notify.all("bad command #{full_command}")
+        Notify.all("bad command #{command_context.command}")
       end
     end
   end

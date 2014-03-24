@@ -1,32 +1,114 @@
-require 'celluloid/autostart'
 require 'celluloid/io'
+require 'celluloid/zmq'
+require 'json'
 
 module CarbonMU
   class Server
     include Celluloid::IO
     include Celluloid::Logger
+    include Celluloid::ZMQ
+
+    attr_reader :zmq_context, :zmq_out, :zmq_in
+
     finalizer :shutdown
 
-    def initialize(host, port)
-      info "*** Starting server on #{host}:#{port}"
+    def initialize(socket_out = nil, socket_in = nil)
+      info "*** Starting CarbonMU game server."
 
-      # Since we included Celluloid::IO, we're actually making a
-      # Celluloid::IO::TCPServer here
-      @server = TCPServer.new(host, port)
+      if socket_out.nil?
+        @zmq_out = PushSocket.new
+        @zmq_out.bind("tcp://127.0.0.1:15001")
+      else
+        @zmq_out = socket_out
+      end
+
+      if socket_in.nil?
+        @zmq_in = PullSocket.new
+        @zmq_in.connect("tcp://127.0.0.1:15000")
+      else
+        @zmq_in = socket_in
+      end
+
       async.run
-    end
-
-    def shutdown
-      @server.close if @server
+      retrieve_existing_connections
     end
 
     def run
-      loop { async.handle_connection @server.accept }
+      loop do
+        async.handle_overlord_datagram(@zmq_in.read)
+      end
     end
 
-    def handle_connection(socket)
-      c = ConnectionManager.add(socket)
-      c.async.run
+    def shutdown
+      error "Terminating server!"
+      @zmq_sub.close
+      @zmq_pub.close
+    end
+
+    def add_connection(connection_id)
+      new_conn = ServerConnection.new(connection_id, Actor.current)
+      ConnectionManager.add(new_conn)
+    end
+
+    def remove_connection(connection_id)
+      ConnectionManager.remove_by_id(connection_id)
+    end
+
+    def connections
+      ConnectionManager.connections
+    end
+
+    def handle_command(input, connection_id)
+      context = CommandContext.new(enacting_connection_id: connection_id, command: input)
+      Parser.parse(context)
+    end
+
+    def handle_overlord_datagram(input)
+      parsed = JSON.parse(input)
+      info "SERVER RECEIVE: #{parsed}"
+      case parsed['op']
+      when 'cmd'
+        handle_command(parsed['cmd'], parsed['connection_id'])
+      when 'connect'
+        add_connection(parsed['connection_id'])
+      when 'disconnect'
+        remove_connection(parsed['connection_id'])
+      when 'ping'
+        # nada
+      else
+        raise ArgumentError, "Unsupported operation '#{parsed['op']}' received from Overlord."
+      end
+    end
+
+    def retrieve_existing_connections
+      send_hash_to_overlord({op: "retrieve_existing_connections"})
+    end
+
+    def self.ping
+      Actor[:server].send_ping_to_overlord
+    end
+
+    def self.trigger_reboot
+      Actor[:server].send_reboot_message_to_overlord
+    end
+
+    def send_ping_to_overlord
+      send_hash_to_overlord({op: "ping"})
+    end
+
+    def send_reboot_message_to_overlord
+      send_hash_to_overlord({op: "reboot"})
+    end
+
+    def write_to_connection(connection_id, str)
+      datagram = {op: "write", connection_id: connection_id, output: str}
+      send_hash_to_overlord(datagram)
+    end
+
+    def send_hash_to_overlord(hash)
+      datagram = JSON.generate(hash)
+      info "SERVER SEND: #{datagram}"
+      @zmq_out.send datagram
     end
   end
 end
