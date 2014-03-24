@@ -16,7 +16,6 @@ module CarbonMU
 
     def self.execute(command_context)
       command_prefix = command_context.command.split(" ")[0].to_sym
-      puts "command prefix is #{command_prefix}"
       if command = CommandManager.commands[command_prefix]
         command_context.instance_eval &command[:block]
       else
