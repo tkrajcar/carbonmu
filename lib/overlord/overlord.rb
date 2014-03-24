@@ -16,7 +16,13 @@ module CarbonMU
       @connections = []
       @overlord_ipc_server = TCPServer.new(host, 10019)
       async.run
+      start_server
+    end
+
+    def start_server
       @server_pid = spawn("/usr/bin/env ruby start-server-only")
+      Process.detach(@server_pid)
+      info "Server PID: #{@server_pid}."
     end
 
     def add_connection(connection)
