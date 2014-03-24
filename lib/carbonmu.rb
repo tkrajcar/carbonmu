@@ -15,11 +15,11 @@ module CarbonMU
   end
 
   def self.start
-    SupervisionGroup.run
+    OverlordSupervisionGroup.run
   end
 
   def self.start_in_background
-    SupervisionGroup.run!
+    OverlordSupervisionGroup.run!
   end
 end
 
