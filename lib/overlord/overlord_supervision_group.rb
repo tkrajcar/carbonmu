@@ -1,5 +1,5 @@
 module CarbonMU
   class OverlordSupervisionGroup < Celluloid::SupervisionGroup
-    supervise Overlord, as: :overlord, args: ["localhost", 8421]
+    supervise Overlord, as: :overlord, args: ["0.0.0.0", 8421]
   end
 end

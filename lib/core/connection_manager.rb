@@ -12,6 +12,10 @@ module CarbonMU
       @@connections.delete(c)
     end
 
+    def self.remove_by_id(id)
+      @@connections.delete_if { |x| x.id == id}
+    end
+
     def self.connections
       @@connections
     end

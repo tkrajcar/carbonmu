@@ -14,7 +14,8 @@ module CarbonMU
     end
 
     def handle_input(input)
-      Actor[:server].handle_input(input, Actor.current)
+      input.chomp!
+      Actor[:overlord].async.send_command_to_server(input, id)
     end
 
     def run
