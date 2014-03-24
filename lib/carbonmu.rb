@@ -21,5 +21,13 @@ module CarbonMU
   def self.start_in_background
     OverlordSupervisionGroup.run!
   end
+
+  def self.start_server
+    ServerSupervisionGroup.run
+  end
+
+  def self.start_server_in_background
+    ServerSupervisionGroup.run!
+  end
 end
 

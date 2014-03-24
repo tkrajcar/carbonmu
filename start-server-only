@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+#TODO - Replace this when the real CLI comes around.
+
+require './lib/carbonmu.rb'
+
+CarbonMU.start_server
