@@ -1,24 +1,48 @@
+require 'celluloid/io'
+require 'celluloid/zmq'
 require 'json'
 
 module CarbonMU
   class Server
     include Celluloid::IO
     include Celluloid::Logger
+    include Celluloid::ZMQ
 
-    attr_reader :overlord
+    attr_reader :zmq_context, :zmq_out, :zmq_in
 
-    def initialize(overlord_host, overlord_port)
+    finalizer :shutdown
+
+    def initialize(socket_out = nil, socket_in = nil)
       info "*** Starting CarbonMU game server."
-      @overlord = TCPSocket.new(overlord_host, overlord_port)
-      # TODO talk to Overlord to retrieve any already-open connections.
+
+      if socket_out.nil?
+        @zmq_out = PushSocket.new
+        @zmq_out.bind("tcp://127.0.0.1:15001")
+      else
+        @zmq_out = socket_out
+      end
+
+      if socket_in.nil?
+        @zmq_in = PullSocket.new
+        @zmq_in.connect("tcp://127.0.0.1:15000")
+      else
+        @zmq_in = socket_in
+      end
+
       async.run
+      retrieve_existing_connections
     end
 
     def run
       loop do
-        input = @overlord.readpartial(4096)
-        handle_overlord_datagram(input)
+        async.handle_overlord_datagram(@zmq_in.read)
       end
+    end
+
+    def shutdown
+      error "Terminating server!"
+      @zmq_sub.close
+      @zmq_pub.close
     end
 
     def add_connection(connection_id)
@@ -49,15 +73,42 @@ module CarbonMU
         add_connection(parsed['connection_id'])
       when 'disconnect'
         remove_connection(parsed['connection_id'])
+      when 'ping'
+        # nada
       else
         raise ArgumentError, "Unsupported operation '#{parsed['op']}' received from Overlord."
       end
     end
 
+    def retrieve_existing_connections
+      send_hash_to_overlord({op: "retrieve_existing_connections"})
+    end
+
+    def self.ping
+      Actor[:server].send_ping_to_overlord
+    end
+
+    def self.trigger_reboot
+      Actor[:server].send_reboot_message_to_overlord
+    end
+
+    def send_ping_to_overlord
+      send_hash_to_overlord({op: "ping"})
+    end
+
+    def send_reboot_message_to_overlord
+      send_hash_to_overlord({op: "reboot"})
+    end
+
     def write_to_connection(connection_id, str)
       datagram = {op: "write", connection_id: connection_id, output: str}
+      send_hash_to_overlord(datagram)
+    end
+
+    def send_hash_to_overlord(hash)
+      datagram = JSON.generate(hash)
       info "SERVER SEND: #{datagram}"
-      @overlord.write(JSON.generate(datagram))
+      @zmq_out.send datagram
     end
   end
 end

@@ -1,20 +1,29 @@
 require 'celluloid/autostart'
 require 'celluloid/io'
+require 'celluloid/zmq'
 require 'json'
 
 module CarbonMU
   class Overlord
     include Celluloid::IO
     include Celluloid::Logger
-    #finalizer :shutdown
+    include Celluloid::ZMQ
 
-    attr_reader :receptors, :connections, :overlord_ipc_server, :ipc_socket, :server_pid
+    finalizer :shutdown
+
+    attr_reader :receptors, :connections, :zmq_out, :zmq_in, :server_pid
 
     def initialize(host, port)
       info "*** Starting CarbonMU overlord."
       @receptors = TelnetReceptor.new(host,port)
       @connections = []
-      @overlord_ipc_server = TCPServer.new(host, 10019)
+
+      @zmq_out = PushSocket.new
+      @zmq_out.bind("tcp://127.0.0.1:15000")
+
+      @zmq_in = PullSocket.new
+      @zmq_in.connect("tcp://127.0.0.1:15001")
+
       async.run
       start_server
     end
@@ -37,17 +46,14 @@ module CarbonMU
 
     def shutdown
       # TODO Tell all receptors and connections to quit.
+      @zmq_out.close
+      @zmq_in.close
+      Process.kill("KILL", @server_pid)
     end
 
     def run
-      loop { async.handle_connection @overlord_ipc_server.accept }
-    end
-
-    def handle_connection(socket)
-      @ipc_socket = socket
       loop do
-        data = socket.readpartial(4096)
-        handle_server_datagram(data)
+        async.handle_server_datagram(@zmq_in.read)
       end
     end
 
@@ -63,10 +69,20 @@ module CarbonMU
       send_hash_to_server({op: 'cmd', connection_id: connection_id, cmd: input})
     end
 
+    def send_ping_to_server
+      send_hash_to_server({op: 'ping'})
+    end
+
     def send_hash_to_server(hash)
       datagram = JSON.generate(hash)
       info "OVERLORD SEND: #{datagram}"
-      @ipc_socket.write(datagram)
+      @zmq_out.send datagram
+    end
+
+    def reboot_server
+      warn "Reboot triggered!"
+      Process.kill("TERM", @server_pid)
+      start_server
     end
 
     def handle_server_datagram(input)
@@ -76,6 +92,16 @@ module CarbonMU
       when 'write'
         conn = @connections.select {|x| x.id == datagram['connection_id']}.first # TODO look for efficiency here
         conn.write(datagram['output'])
+      when 'reboot'
+        reboot_server
+      when 'retrieve_existing_connections'
+        info 'Sending connections to server...'
+        connections.each do |conn|
+          send_connect_to_server(conn)
+        end
+      when 'ping'
+        info "Received ping."
+        send_ping_to_server
       else
         raise ArgumentError, "Unsupported operation '#{datagram['op']}' received from Server."
       end

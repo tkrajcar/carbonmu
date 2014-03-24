@@ -1,7 +1,7 @@
 module CarbonMU
   class RebootCommand < Command
     command do
-      Server.reboot
+      Reboot.reboot
     end
   end
 end

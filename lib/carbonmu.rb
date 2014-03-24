@@ -4,6 +4,8 @@ require 'bundler/setup'
 require 'require_all'
 require_all 'lib'
 
+Celluloid::ZMQ.init
+
 module CarbonMU
   class << self
     attr_accessor :configuration
