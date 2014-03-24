@@ -7,9 +7,9 @@ module CarbonMU
 
     attr_reader :overlord
 
-    def initialize
+    def initialize(overlord_host, overlord_port)
       info "*** Starting CarbonMU game server."
-      @overlord = TCPSocket.new('localhost', 10019)
+      @overlord = TCPSocket.new(overlord_host, overlord_port)
       # TODO talk to Overlord to retrieve any already-open connections.
       async.run
     end
