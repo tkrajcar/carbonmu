@@ -1,15 +1,16 @@
 require 'spec_helper'
 
-class TestPersisted < PersistedObject
+class TestPersisted 
+  include Persistable
+
   field :foo
   read_only_field :read_only_foo
 end
 
-describe PersistedObject do
+describe Persistable do
   context "regular fields" do
     it "supports registering fields as persisted" do
-      tester = TestPersisted.new
-      tester.fields.should include(:foo)
+      TestPersisted.fields.should include(:foo)
     end
 
     it "defines an accessor for fields" do
@@ -21,8 +22,7 @@ describe PersistedObject do
 
   context "read-only fields" do
     it "supports registering read-only fields as persisted" do
-      tester = TestPersisted.new
-      tester.fields.should include(:read_only_foo)
+      TestPersisted.fields.should include(:read_only_foo)
     end
 
     it "supports read-only fields" do
