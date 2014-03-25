@@ -2,7 +2,8 @@ source 'https://rubygems.org/'
 
 gem "celluloid-io", "~> 0.15.0"
 gem "require_all"
-gem "json", "~> 1.8.1"
+gem "multi_json", "~> 1.9.2"
+gem "oj", "~> 2.6.1", platforms: [:ruby]
 gem "celluloid-zmq", "~> 0.15.0"
 
 group :development do

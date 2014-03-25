@@ -1,7 +1,7 @@
 require 'celluloid/autostart'
 require 'celluloid/io'
 require 'celluloid/zmq'
-require 'json'
+require 'multi_json'
 
 module CarbonMU
   class Overlord
@@ -70,7 +70,7 @@ module CarbonMU
     end
 
     def send_hash_to_server(hash)
-      datagram = JSON.generate(hash)
+      datagram = MultiJson.dump(hash)
       info "OVERLORD SEND: #{datagram}"
       @zmq_out.send datagram
     end
@@ -82,7 +82,7 @@ module CarbonMU
     end
 
     def handle_server_datagram(input)
-      datagram = JSON.parse(input)
+      datagram = MultiJson.load(input)
       info "OVERLORD RECEIVE: #{datagram}"
       case datagram['op']
       when 'write'
