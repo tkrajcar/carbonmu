@@ -69,10 +69,6 @@ module CarbonMU
       send_hash_to_server({op: 'cmd', connection_id: connection_id, cmd: input})
     end
 
-    def send_ping_to_server
-      send_hash_to_server({op: 'ping'})
-    end
-
     def send_hash_to_server(hash)
       datagram = JSON.generate(hash)
       info "OVERLORD SEND: #{datagram}"
@@ -96,12 +92,9 @@ module CarbonMU
         reboot_server
       when 'retrieve_existing_connections'
         info 'Sending connections to server...'
-        connections.each do |conn|
+        @connections.each do |conn|
           send_connect_to_server(conn)
         end
-      when 'ping'
-        info "Received ping."
-        send_ping_to_server
       else
         raise ArgumentError, "Unsupported operation '#{datagram['op']}' received from Server."
       end

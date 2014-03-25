@@ -41,8 +41,8 @@ module CarbonMU
 
     def shutdown
       error "Terminating server!"
-      @zmq_sub.close
-      @zmq_pub.close
+      @zmq_sub.close if @zmq_sub
+      @zmq_pub.close if @zmq_pub
     end
 
     def add_connection(connection_id)
@@ -73,8 +73,6 @@ module CarbonMU
         add_connection(parsed['connection_id'])
       when 'disconnect'
         remove_connection(parsed['connection_id'])
-      when 'ping'
-        # nada
       else
         raise ArgumentError, "Unsupported operation '#{parsed['op']}' received from Overlord."
       end
@@ -84,16 +82,8 @@ module CarbonMU
       send_hash_to_overlord({op: "retrieve_existing_connections"})
     end
 
-    def self.ping
-      Actor[:server].send_ping_to_overlord
-    end
-
     def self.trigger_reboot
       Actor[:server].send_reboot_message_to_overlord
-    end
-
-    def send_ping_to_overlord
-      send_hash_to_overlord({op: "ping"})
     end
 
     def send_reboot_message_to_overlord
