@@ -1,7 +1,7 @@
 module CarbonMU
   class PingCommand < Command
     command do
-      Notify.one(enacting_connection_id, "PONG")
+      Notify.one(enacting_connection, "PONG")
     end
   end
 end

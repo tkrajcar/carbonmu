@@ -6,9 +6,8 @@ module CarbonMU
       end
     end
 
-    def self.one(connection_id, text)
-      conn = ConnectionManager.connections.select { |x| x.id == connection_id}.first # todo replace with betterness.
-      conn.write(text)
+    def self.one(connection, text)
+      connection.write(text)
     end
   end
 end

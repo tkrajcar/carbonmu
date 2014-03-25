@@ -59,7 +59,8 @@ module CarbonMU
     end
 
     def handle_command(input, connection_id)
-      context = CommandContext.new(enacting_connection_id: connection_id, command: input)
+      context = CommandContext.new(enacting_connection: ConnectionManager[connection_id], command: input)
+      puts "Connection is #{context.enacting_connection}"
       Parser.parse(context)
     end
 
