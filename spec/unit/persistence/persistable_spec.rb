@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-class TestPersisted 
+class TestPersisted
   include Persistable
 
   field :foo
@@ -17,6 +17,10 @@ describe Persistable do
       tester = TestPersisted.new
       tester.should respond_to(:foo)
       tester.should respond_to(:foo=)
+    end
+
+    it "doesn't let you directly edit klass.fields" do
+      TestPersisted.should_not respond_to(:fields=)
     end
   end
 

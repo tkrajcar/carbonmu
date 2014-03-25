@@ -15,7 +15,7 @@ module CarbonMU
     module ClassMethods
       def self.extended(base)
         base.instance_eval do
-          class << self; attr_accessor :fields; end
+          class << self; attr_reader :fields; end
           @fields = []
         end
       end
