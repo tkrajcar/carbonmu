@@ -1,23 +1,29 @@
-
 module CarbonMU
   module ConnectionManager
-    @@connections = []
+    @@connections = {}
+
+    def self.[](x)
+      @@connections[x]
+    end
 
     def self.add(c)
-      @@connections << c
-      c
+      @@connections[c.id] = c
     end
 
     def self.remove(c)
-      @@connections.delete(c)
+      remove_by_id(c.id)
     end
 
     def self.remove_by_id(id)
-      @@connections.delete_if { |x| x.id == id}
+      @@connections.delete(id)
+    end
+
+    def self.remove_all
+      @@connections = {}
     end
 
     def self.connections
-      @@connections
+      @@connections.values
     end
   end
 end
