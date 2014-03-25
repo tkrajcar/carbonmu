@@ -1,5 +1,3 @@
-require 'active_support'
-
 module CarbonMU
   module Persistable
     attr_reader :_id
