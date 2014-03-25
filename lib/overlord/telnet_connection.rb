@@ -8,8 +8,9 @@ module CarbonMU
     attr_reader :socket
 
     def initialize(socket)
-      @socket = socket
       super()
+      @socket = socket
+      async.run
     end
 
     def run

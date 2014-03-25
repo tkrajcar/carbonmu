@@ -25,8 +25,6 @@ module CarbonMU
     def handle_connection(socket)
       tc = TelnetConnection.new(socket)
       Actor[:overlord].add_connection(tc)
-      #tc.async.run
-      #c.async.run
     end
   end
 end

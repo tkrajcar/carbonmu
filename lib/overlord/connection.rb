@@ -10,7 +10,6 @@ module CarbonMU
 
     def initialize
       @id = SecureRandom.uuid
-      async.run
     end
 
     def handle_input(input)
