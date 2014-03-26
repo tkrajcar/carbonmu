@@ -8,6 +8,9 @@ Bundler.setup(:default, :test)
 require_relative '../lib/carbonmu.rb'
 require 'pry'
 
+require 'fakefs/safe'
+require 'fakefs/spec_helpers'
+
 include CarbonMU
 CarbonMU.configure do |c|
   c.logger = Logger.new(nil)
