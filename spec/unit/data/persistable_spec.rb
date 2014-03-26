@@ -42,16 +42,30 @@ describe Persistable do
     end
   end
 
-  it "defines a _id field that's read-only" do
-    tester = TestPersisted.new
-    tester.should respond_to(:_id)
-    tester.should_not respond_to(:_id=)
-  end
+  context "_id" do
+    it "lets you retrieve a _id" do
+      tester = TestPersisted.new
+      tester.should respond_to(:_id)
+    end
 
-  it "generates _id uniquely" do
-    tester = TestPersisted.new
-    other_tester = TestPersisted.new
-    tester._id.should_not eq(other_tester._id)
+    it "generates _id uniquely" do
+      tester = TestPersisted.new
+      other_tester = TestPersisted.new
+      tester._id.should_not eq(other_tester._id)
+    end
+
+    it "allows for setting _id" do
+      tester = TestPersisted.new
+      tester._id = "abc123"
+      tester._id.should eq("abc123")
+    end
+
+    it "doesn't allow setting _id twice" do
+      tester = TestPersisted.new
+      tester._id = "abc123"
+      expect {tester._id = "def234"}.to raise_error(RuntimeError)
+      tester._id.should eq("abc123")
+    end
   end
 
   it "sends .save to DataManager" do

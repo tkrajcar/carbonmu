@@ -1,5 +1,10 @@
 module CarbonMU
   module Persistable
+    def _id=(value)
+      raise RuntimeError, "Can't assign a _id to an object that already has one" unless @_id.nil?
+      @_id = value
+    end
+
     def _id
       @_id ||= SecureRandom.uuid
     end
