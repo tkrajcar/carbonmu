@@ -8,7 +8,7 @@ module CarbonMU
 
     finalizer :shutdown
 
-    def initialize(arg)
+    def initialize(arg = nil)
       @id = SecureRandom.uuid
       after_initialize(arg)
     end
