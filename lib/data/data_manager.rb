@@ -5,7 +5,7 @@ module CarbonMU
     include Celluloid
 
     def self.persist(obj)
-      Actor[:data_engine].persist(obj)
+      Actor[:data_engine].async.persist(obj.dup)
     end
   end
 end
