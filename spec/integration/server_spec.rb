@@ -1,6 +1,11 @@
 require 'spec_helper'
 
 describe "server" do
+  after(:all) do
+    Celluloid.shutdown
+    Celluloid.boot
+  end
+
   it 'accepts connections' do
     CarbonMU.start_in_background
     s = TCPSocket.new'localhost', 8421
