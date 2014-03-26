@@ -7,8 +7,7 @@ module CarbonMU
 
     attr_reader :socket
 
-    def initialize(socket)
-      super()
+    def after_initialize(socket)
       @socket = socket
       async.run
     end
@@ -25,9 +24,8 @@ module CarbonMU
       terminate
     end
 
-    def shutdown
+    def before_shutdown
       @socket.close unless @socket.closed?
-      super
     end
 
     def read

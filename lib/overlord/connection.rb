@@ -8,8 +8,13 @@ module CarbonMU
 
     finalizer :shutdown
 
-    def initialize
+    def initialize(arg)
       @id = SecureRandom.uuid
+      after_initialize(arg)
+    end
+
+    def after_initialize(arg)
+      nil # to be implemented by subclasses, if desired
     end
 
     def handle_input(input)
@@ -22,7 +27,12 @@ module CarbonMU
     end
 
     def shutdown
+      before_shutdown
       Actor[:overlord].async.remove_connection(Actor.current)
+    end
+
+    def before_shutdown
+      nil # to be implemented by subclasses, if desired
     end
   end
 end
