@@ -1,25 +1,23 @@
 require 'spec_helper'
 
 describe EmbeddedDataEngine do
-  include FakeFS::SpecHelpers
-  let(:valid_persistable) {
-    @as_hash = { "valid" => true }
-    @as_json = MultiJson.dump(@as_hash)
-    @valid_persistable = double("Persistable",
-                                _id: "abc123",
-                                fields: [:foo],
-                                foo: "bar",
-                                as_hash: @as_hash
-                                )
-  }
-
-  before(:each) do
-    @ede = EmbeddedDataEngine.new
-    FakeFS.activate!
+  let(:as_hash) { {"valid" => true} }
+  let(:as_json) { MultiJson.dump(as_hash) }
+  let(:valid_persistable) do
+    double("Persistable",
+           _id: "abc123",
+           fields: [:foo],
+           foo: "bar",
+           as_hash: as_hash
+          )
   end
 
-  after(:each) do
-    FakeFS.deactivate!
+  before(:each) do
+    @ede = EmbeddedDataEngine.new("db_test")
+  end
+
+  after(:all) do
+    FileUtils.rm_rf("db_test")
   end
 
   context ".persist" do
@@ -35,9 +33,9 @@ describe EmbeddedDataEngine do
 
     it "writes a good object to db/_id.json" do
       @ede.persist(valid_persistable)
-      expect(File).to exist("db/#{valid_persistable._id}.json")
-      File.open("db/#{valid_persistable._id}.json", 'rb') do |f|
-        f.read.should eq(@as_json)
+      expect(File).to exist("db_test/#{valid_persistable._id}.json")
+      File.open("db_test/#{valid_persistable._id}.json", 'rb') do |f|
+        f.read.should eq(as_json)
       end
     end
   end
