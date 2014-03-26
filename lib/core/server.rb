@@ -29,6 +29,8 @@ module CarbonMU
         @zmq_in = socket_in
       end
 
+      EmbeddedDataEngine.supervise_as :data_engine
+
       async.run
       retrieve_existing_connections
     end

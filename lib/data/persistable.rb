@@ -3,11 +3,24 @@ module CarbonMU
     attr_reader :_id
 
     def _id
-      _id ||= SecureRandom.uuid
+      @_id ||= SecureRandom.uuid
     end
 
     def self.included(base)
       base.extend(ClassMethods)
+    end
+
+    def save
+      DataManager.persist(self)
+    end
+
+    def as_hash
+      fields_with_id = fields + [:_id]
+      Hash[fields_with_id.map {|k| [k.to_sym, self.send(k)] }]
+    end
+
+    def fields
+      self.class.fields
     end
 
     module ClassMethods

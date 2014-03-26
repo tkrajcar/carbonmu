@@ -22,6 +22,12 @@ describe Persistable do
     it "doesn't let you directly edit klass.fields" do
       TestPersisted.should_not respond_to(:fields=)
     end
+
+    it "supports .fields on both the class and an instance" do
+      tester = TestPersisted.new
+      TestPersisted.should respond_to(:fields)
+      tester.should respond_to(:fields)
+    end
   end
 
   context "read-only fields" do
@@ -46,5 +52,18 @@ describe Persistable do
     tester = TestPersisted.new
     other_tester = TestPersisted.new
     tester._id.should_not eq(other_tester._id)
+  end
+
+  it "sends .save to DataManager" do
+    tester = TestPersisted.new
+    DataManager.should_receive(:persist).with(tester)
+    tester.save
+  end
+
+  it "knows how to convert itself into a hash" do
+    tester = TestPersisted.new
+    tester.foo = "bar"
+    expected_hash = {_id: tester._id, foo: "bar", read_only_foo: nil}
+    tester.as_hash.should eq(expected_hash)
   end
 end
