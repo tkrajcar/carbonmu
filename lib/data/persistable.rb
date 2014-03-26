@@ -1,7 +1,5 @@
 module CarbonMU
   module Persistable
-    attr_reader :_id
-
     def _id
       @_id ||= SecureRandom.uuid
     end
@@ -15,8 +13,8 @@ module CarbonMU
     end
 
     def as_hash
-      fields_with_id = fields + [:_id]
-      Hash[fields_with_id.map {|k| [k.to_sym, self.send(k)] }]
+      additional_fields = {_id: _id, _class: self.class.name}
+      Hash[fields.map {|k| [k.to_sym, self.send(k)] }].merge(additional_fields)
     end
 
     def fields

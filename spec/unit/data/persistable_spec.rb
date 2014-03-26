@@ -63,7 +63,7 @@ describe Persistable do
   it "knows how to convert itself into a hash" do
     tester = TestPersisted.new
     tester.foo = "bar"
-    expected_hash = {_id: tester._id, foo: "bar", read_only_foo: nil}
+    expected_hash = {_id: tester._id, foo: "bar", read_only_foo: nil, _class: "TestPersisted"}
     tester.as_hash.should eq(expected_hash)
   end
 end
