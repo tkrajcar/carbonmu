@@ -1,3 +1,13 @@
+GIT
+  remote: git://github.com/celluloid/celluloid-zmq.git
+  revision: 4c2ab1af7b757ab7b5f4758afe09743c141c46ea
+  ref: 4c2ab1af7b757ab7b5f4758afe09743c141c46ea
+  specs:
+    celluloid-zmq (0.15.0)
+      celluloid (>= 0.15.0)
+      ffi
+      ffi-rzmq
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -7,10 +17,6 @@ GEM
     celluloid-io (0.15.0)
       celluloid (>= 0.15.0)
       nio4r (>= 0.5.0)
-    celluloid-zmq (0.15.0)
-      celluloid (>= 0.13.0)
-      ffi
-      ffi-rzmq
     codeclimate-test-reporter (0.3.0)
       simplecov (>= 0.7.1, < 1.0.0)
     coderay (1.1.0)
@@ -53,7 +59,7 @@ PLATFORMS
 DEPENDENCIES
   awesome_print
   celluloid-io (~> 0.15.0)
-  celluloid-zmq (~> 0.15.0)
+  celluloid-zmq!
   codeclimate-test-reporter
   multi_json (~> 1.9.2)
   oj (~> 2.6.1)
