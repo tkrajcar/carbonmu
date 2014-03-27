@@ -1,11 +1,14 @@
 require 'celluloid'
 
 module CarbonMU
-  class DataManager
-    include Celluloid
+  module DataManager
 
     def self.persist(obj)
-      Actor[:data_engine].async.persist(obj.dup)
+      data_engine.async.persist(obj.dup)
+    end
+
+    def self.data_engine
+      Celluloid::Actor[:data_engine]
     end
   end
 end
