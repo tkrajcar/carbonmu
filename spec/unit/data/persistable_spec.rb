@@ -80,4 +80,19 @@ describe Persistable do
     expected_hash = {_id: tester._id, foo: "bar", read_only_foo: nil, _class: "TestPersisted"}
     tester.as_hash.should eq(expected_hash)
   end
+
+  context ".from_hash" do
+    it "knows how to convert a hash back into an instance of itself" do
+      input_hash = {"_id" => "abc123", "foo" => "bar", "_class" => "TestPersisted"}
+      obj = TestPersisted.from_hash(input_hash)
+      obj.should be_a(TestPersisted)
+      obj._id.should eq("abc123")
+      obj.foo.should eq("bar")
+    end
+
+    it "raises an error if called with a hash that doesn't include _class" do
+      input_hash = {foo: 'bar'}
+      expect { TestPersisted.from_hash(input_hash) }.to raise_error(ArgumentError)
+    end
+  end
 end

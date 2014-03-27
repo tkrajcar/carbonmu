@@ -43,6 +43,17 @@ module CarbonMU
         attr_reader name
         @fields << name
       end
+
+      def from_hash(hash)
+        raise ArgumentError, "called from_hash with a hash that does not contain _class" unless hash.has_key?("_class")
+        klass = Object.const_get(hash["_class"])
+        obj = klass.new
+        hash.each do |k, v|
+          next if k == "_class"
+          obj.send("#{k}=", "#{v}")
+        end
+        obj
+      end
     end
 
   end
