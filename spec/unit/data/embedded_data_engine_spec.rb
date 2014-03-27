@@ -59,9 +59,25 @@ describe EmbeddedDataEngine do
       obj.foo.should eq("bar")
     end
 
+    it "places an object into DataManager" do
+      File.open("db_test/abc123.json",'w') { |f| f.write as_json }
+      DataManager.stub(:[]=)
+      DataManager.should_receive(:[]=).with("abc123",an_instance_of(EDELoadTest))
+      @obj = @ede.load("abc123")
+    end
+
     it "raises InvalidObjectError if it finds a file whose internal _id does not match its filename" do
       File.open("db_test/definitely-bad.json",'w') { |f| f.write as_json }
       expect { @ede.load("definitely-bad") }.to raise_error(InvalidObjectError)
+    end
+  end
+
+  context ".load_all" do
+    it "attempts to load every file found in db_test" do
+      FileUtils.rm_rf("db_test")
+      Dir.mkdir("db_test")
+      File.open("db_test/abc123.json",'w') { |f| f.write as_json }
+      @ede.load_all.should eq(1)
     end
   end
 end

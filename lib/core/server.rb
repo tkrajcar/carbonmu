@@ -30,6 +30,7 @@ module CarbonMU
       end
 
       EmbeddedDataEngine.supervise_as :data_engine
+      Actor[:data_engine].load_all
 
       async.run
       retrieve_existing_connections
