@@ -2,7 +2,7 @@ require 'multi_json'
 require 'celluloid'
 
 module CarbonMU
-  class EmbeddedDataEngine
+  class EmbeddedDataEngine < DataEngine
     include Celluloid
 
     def initialize(directory_name = 'db')

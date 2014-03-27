@@ -25,6 +25,8 @@ describe EmbeddedDataEngine do
     FileUtils.rm_rf("db_test")
   end
 
+  it_behaves_like "a DataEngine implementation"
+
   context ".persist" do
     it "raises if you attempt to persist an object that doesn't support _id" do
       obj = double("badobject")
@@ -59,7 +61,7 @@ describe EmbeddedDataEngine do
 
     it "raises InvalidObjectError if it finds a file whose internal _id does not match its filename" do
       File.open("db_test/definitely-bad.json",'w') { |f| f.write as_json }
-      expect { obj = @ede.load("definitely-bad") }.to raise_error(InvalidObjectError)
+      expect { @ede.load("definitely-bad") }.to raise_error(InvalidObjectError)
     end
   end
 end
