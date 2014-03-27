@@ -18,4 +18,16 @@ describe DataManager do
       DataManager.persist(@fake_obj)
     end
   end
+
+  context "object storage and retrieval" do
+    it "supports storing and retrieving objects via []= and []" do
+      obj = Object.new
+      DataManager[:foo] = obj
+      DataManager[:foo].should eq(obj)
+    end
+
+    it "raises an ObjectNotFoundError for objects not loaded" do
+      expect { DataManager[:very_clearly_not_a_valid_object] }.to raise_error(ObjectNotFoundError)
+    end
+  end
 end
