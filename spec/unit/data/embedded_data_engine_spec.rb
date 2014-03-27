@@ -1,7 +1,12 @@
 require 'spec_helper'
 
+class EDELoadTest
+  include Persistable
+  field :foo
+end
+
 describe EmbeddedDataEngine do
-  let(:as_hash) { {"valid" => true} }
+  let(:as_hash) { {"_id" => "abc123", "foo" => "bar", "_class" => "EDELoadTest"} }
   let(:as_json) { MultiJson.dump(as_hash) }
   let(:valid_persistable) do
     double("Persistable",
@@ -37,6 +42,24 @@ describe EmbeddedDataEngine do
       File.open("db_test/#{valid_persistable._id}.json", 'rb') do |f|
         f.read.should eq(as_json)
       end
+    end
+  end
+
+  context ".load" do
+    it "raises ObjectNotFoundError if given a bad id" do
+      expect { @ede.load("DEFINITELY_NOT_A_GOOD_ID") }.to raise_error(ObjectNotFoundError)
+    end
+
+    it "loads a good id and parses it" do
+      File.open("db_test/abc123.json",'w') { |f| f.write as_json }
+      obj = @ede.load("abc123")
+      obj._id.should eq("abc123")
+      obj.foo.should eq("bar")
+    end
+
+    it "raises InvalidObjectError if it finds a file whose internal _id does not match its filename" do
+      File.open("db_test/definitely-bad.json",'w') { |f| f.write as_json }
+      expect { obj = @ede.load("definitely-bad") }.to raise_error(InvalidObjectError)
     end
   end
 end
