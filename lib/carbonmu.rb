@@ -9,6 +9,7 @@ Celluloid::ZMQ.init
 module CarbonMU
   class << self
     attr_accessor :configuration
+    attr_accessor :overlord_receive_port
   end
   self.configuration = Configuration.new
 

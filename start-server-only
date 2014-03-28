@@ -4,4 +4,5 @@
 
 require './lib/carbonmu.rb'
 
+CarbonMU.overlord_receive_port = ARGV[0]
 CarbonMU.start_server

@@ -8,26 +8,14 @@ module CarbonMU
     include Celluloid::Logger
     include Celluloid::ZMQ
 
-    attr_reader :zmq_context, :zmq_out, :zmq_in
-
     finalizer :shutdown
 
-    def initialize(socket_out = nil, socket_in = nil)
-      info "*** Starting CarbonMU game server."
+    def initialize
+      info "*** Starting CarbonMU game server to connect to overlord port #{CarbonMU.overlord_receive_port}."
 
-      if socket_out.nil?
-        @zmq_out = PushSocket.new
-        @zmq_out.bind("tcp://127.0.0.1:15001")
-      else
-        @zmq_out = socket_out
-      end
-
-      if socket_in.nil?
-        @zmq_in = PullSocket.new
-        @zmq_in.connect("tcp://127.0.0.1:15000")
-      else
-        @zmq_in = socket_in
-      end
+      @ipc_reader = ReadSocket.new
+      @ipc_writer = WriteSocket.new(CarbonMU.overlord_receive_port)
+      send_server_started_to_overlord
 
       EmbeddedDataEngine.supervise_as :data_engine
       Actor[:data_engine].load_all
@@ -38,14 +26,12 @@ module CarbonMU
 
     def run
       loop do
-        async.handle_overlord_datagram(@zmq_in.read)
+        async.handle_overlord_datagram(@ipc_reader.read)
       end
     end
 
     def shutdown
       error "Terminating server!"
-      @zmq_sub.close if @zmq_sub
-      @zmq_pub.close if @zmq_pub
     end
 
     def add_connection(connection_id)
@@ -64,6 +50,10 @@ module CarbonMU
     def handle_command(input, connection_id)
       context = CommandContext.new(enacting_connection: ConnectionManager[connection_id], command: input)
       Parser.parse(context)
+    end
+
+    def send_server_started_to_overlord
+      send_hash_to_overlord({op: "started", port: @ipc_reader.port_number, pid: Process.pid})
     end
 
     def handle_overlord_datagram(input)
@@ -101,7 +91,7 @@ module CarbonMU
     def send_hash_to_overlord(hash)
       datagram = MultiJson.dump(hash)
       info "SERVER SEND: #{datagram}"
-      @zmq_out.send datagram
+      @ipc_writer.send datagram
     end
   end
 end

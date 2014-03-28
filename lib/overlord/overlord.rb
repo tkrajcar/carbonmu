@@ -11,27 +11,29 @@ module CarbonMU
 
     finalizer :shutdown
 
-    attr_reader :receptors, :connections, :zmq_out, :zmq_in, :server_pid
+    attr_reader :receptors, :connections
 
     def initialize(host, port)
       info "*** Starting CarbonMU overlord."
       @receptors = TelnetReceptor.new(host,port)
       @connections = []
 
-      @zmq_out = PushSocket.new
-      @zmq_out.bind("tcp://127.0.0.1:15000")
-
-      @zmq_in = PullSocket.new
-      @zmq_in.connect("tcp://127.0.0.1:15001")
-
+      @ipc_reader = ReadSocket.new
+      info "*** Overlord waiting for IPC on port #{@ipc_reader.port_number}"
       async.run
+
       start_server
     end
 
     def start_server
-      @server_pid = spawn("/usr/bin/env ruby start-server-only")
-      Process.detach(@server_pid)
-      info "Server PID: #{@server_pid}."
+      spawn("/usr/bin/env ruby start-server-only #{@ipc_reader.port_number}")
+    end
+
+    def handle_server_started(pid, port)
+      info "*** Overlord received server IPC start. Pid #{pid}, port #{port}."
+      @current_server_pid = pid
+      Process.detach(pid)
+      @ipc_writer = WriteSocket.new(port)
     end
 
     def add_connection(connection)
@@ -46,14 +48,12 @@ module CarbonMU
 
     def shutdown
       # TODO Tell all receptors and connections to quit.
-      @zmq_out.close
-      @zmq_in.close
-      Process.kill("KILL", @server_pid)
+      Process.kill("TERM", @current_server_pid)
     end
 
     def run
       loop do
-        async.handle_server_datagram(@zmq_in.read)
+        async.handle_server_datagram(@ipc_reader.read)
       end
     end
 
@@ -72,12 +72,12 @@ module CarbonMU
     def send_hash_to_server(hash)
       datagram = MultiJson.dump(hash)
       info "OVERLORD SEND: #{datagram}"
-      @zmq_out.send datagram
+      @ipc_writer.send datagram
     end
 
     def reboot_server
       warn "Reboot triggered!"
-      Process.kill("TERM", @server_pid)
+      Process.kill("TERM", @current_server_pid)
       start_server
     end
 
@@ -85,6 +85,8 @@ module CarbonMU
       datagram = MultiJson.load(input)
       info "OVERLORD RECEIVE: #{datagram}"
       case datagram['op']
+      when 'started'
+        handle_server_started(datagram['pid'], datagram['port'])
       when 'write'
         conn = @connections.select {|x| x.id == datagram['connection_id']}.first # TODO look for efficiency here
         conn.write(datagram['output'])
