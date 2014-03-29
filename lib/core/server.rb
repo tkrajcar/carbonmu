@@ -1,6 +1,5 @@
 require 'celluloid/io'
 require 'celluloid/zmq'
-require 'multi_json'
 
 module CarbonMU
   class Server
@@ -26,7 +25,7 @@ module CarbonMU
 
     def run
       loop do
-        async.handle_overlord_datagram(@ipc_reader.read)
+        async.handle_overlord_message(@ipc_reader.read)
       end
     end
 
@@ -53,26 +52,26 @@ module CarbonMU
     end
 
     def send_server_started_to_overlord
-      send_hash_to_overlord({op: "started", port: @ipc_reader.port_number, pid: Process.pid})
+      send_message_to_overlord(:started, port: @ipc_reader.port_number, pid: Process.pid)
     end
 
-    def handle_overlord_datagram(input)
-      parsed = MultiJson.load(input)
-      info "SERVER RECEIVE: #{parsed}"
-      case parsed['op']
-      when 'cmd'
-        handle_command(parsed['cmd'], parsed['connection_id'])
-      when 'connect'
-        add_connection(parsed['connection_id'])
-      when 'disconnect'
-        remove_connection(parsed['connection_id'])
+    def handle_overlord_message(input)
+      message = IPCMessage.unserialize(input)
+      info "SERVER RECEIVE: #{message}"
+      case message.op
+      when :command
+        handle_command(message.command, message.connection_id)
+      when :connect
+        add_connection(message.connection_id)
+      when :disconnect
+        remove_connection(message.connection_id)
       else
-        raise ArgumentError, "Unsupported operation '#{parsed['op']}' received from Overlord."
+        raise ArgumentError, "Unsupported operation '#{message.op}' received from Overlord."
       end
     end
 
     def retrieve_existing_connections
-      send_hash_to_overlord({op: "retrieve_existing_connections"})
+      send_message_to_overlord(:retrieve_existing_connections)
     end
 
     def self.trigger_reboot
@@ -80,18 +79,17 @@ module CarbonMU
     end
 
     def send_reboot_message_to_overlord
-      send_hash_to_overlord({op: "reboot"})
+      send_message_to_overlord(:reboot)
     end
 
     def write_to_connection(connection_id, str)
-      datagram = {op: "write", connection_id: connection_id, output: str}
-      send_hash_to_overlord(datagram)
+      send_message_to_overlord(:write, connection_id: connection_id, output: str)
     end
 
-    def send_hash_to_overlord(hash)
-      datagram = MultiJson.dump(hash)
-      info "SERVER SEND: #{datagram}"
-      @ipc_writer.send datagram
+    def send_message_to_overlord(op, params={})
+      message = IPCMessage.new(op, params)
+      info "SERVER SEND: #{message}"
+      @ipc_writer.send message.serialize
     end
   end
 end

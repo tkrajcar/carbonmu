@@ -1,7 +1,6 @@
 require 'celluloid/autostart'
 require 'celluloid/io'
 require 'celluloid/zmq'
-require 'multi_json'
 
 module CarbonMU
   class Overlord
@@ -53,26 +52,26 @@ module CarbonMU
 
     def run
       loop do
-        async.handle_server_datagram(@ipc_reader.read)
+        async.handle_server_message(@ipc_reader.read)
       end
     end
 
     def send_connect_to_server(connection)
-      send_hash_to_server({op: 'connect', connection_id: connection.id})
+      send_message_to_server(:connect, connection_id: connection.id)
     end
 
     def send_disconnect_to_server(connection)
-      send_hash_to_server({op: 'disconnect', connection_id: connection.id})
+      send_message_to_server(:disconnect, connection_id: connection.id)
     end
 
     def send_command_to_server(input, connection_id)
-      send_hash_to_server({op: 'cmd', connection_id: connection_id, cmd: input})
+      send_message_to_server(:command, command: input, connection_id: connection_id)
     end
 
-    def send_hash_to_server(hash)
-      datagram = MultiJson.dump(hash)
-      info "OVERLORD SEND: #{datagram}"
-      @ipc_writer.send datagram
+    def send_message_to_server(op, params={})
+      message = IPCMessage.new(op, params)
+      info "OVERLORD SEND: #{message}"
+      @ipc_writer.send message.serialize
     end
 
     def reboot_server
@@ -81,24 +80,24 @@ module CarbonMU
       start_server
     end
 
-    def handle_server_datagram(input)
-      datagram = MultiJson.load(input)
-      info "OVERLORD RECEIVE: #{datagram}"
-      case datagram['op']
-      when 'started'
-        handle_server_started(datagram['pid'], datagram['port'])
-      when 'write'
-        conn = @connections.select {|x| x.id == datagram['connection_id']}.first # TODO look for efficiency here
-        conn.write(datagram['output'])
-      when 'reboot'
+    def handle_server_message(input)
+      message = IPCMessage.unserialize(input)
+      info "OVERLORD RECEIVE: #{message}"
+      case message.op
+      when :started
+        handle_server_started(message.pid, message.port)
+      when :write
+        conn = @connections.select {|x| x.id == message.connection_id}.first # TODO look for efficiency here
+        conn.write(message.output)
+      when :reboot
         reboot_server
-      when 'retrieve_existing_connections'
+      when :retrieve_existing_connections
         info 'Sending connections to server...'
         @connections.each do |conn|
           send_connect_to_server(conn)
         end
       else
-        raise ArgumentError, "Unsupported operation '#{datagram['op']}' received from Server."
+        raise ArgumentError, "Unsupported operation '#{message.op}' received from Server."
       end
     end
   end
