@@ -9,11 +9,7 @@ module CarbonMU
     end
 
     def command_prefix
-      if [':', '"', '\\'].include? command[0]
-        command[0].to_sym
-      else
-        command.match(/^(\w*)/)[0].to_sym
-      end
+      CommandManager.command_to_prefix(command)
     end
   end
 end

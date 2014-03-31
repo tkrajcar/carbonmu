@@ -46,4 +46,22 @@ describe CommandManager do
       subject.execute(context)
     end
   end
+
+  context "command prefixes" do
+    it "handles a simple case" do
+      CommandManager.command_to_prefix("look hi").should eq(:look)
+    end
+
+    it "handles non-alpha chars without whitespace" do
+      CommandManager.command_to_prefix('"hello there').should eq(:'"')
+    end
+
+    it "removes switches" do
+      CommandManager.command_to_prefix("command/switch foo").should eq(:command)
+    end
+
+    it "handles single words" do
+      CommandManager.command_to_prefix("foo").should eq(:foo)
+    end
+  end
 end

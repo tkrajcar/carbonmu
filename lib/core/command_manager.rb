@@ -22,5 +22,13 @@ module CarbonMU
         Notify.all("bad command #{command_context.command_prefix}")
       end
     end
+
+    def self.command_to_prefix(command)
+      if [':', '"', '\\'].include? command[0]
+        command[0].to_sym
+      else
+        command.match(/^(\w*)/)[0].to_sym
+      end
+    end
   end
 end
