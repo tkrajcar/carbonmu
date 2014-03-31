@@ -35,13 +35,13 @@ describe CommandManager do
   context '#execute' do
     it "handles a bad command" do
       Notify.should_receive(:all) #TODO
-      context = double("CommandContext", command: "DEFINITELY_NEVER_GOING_TO_BE_A_GOOD_COMMAND")
+      context = double("CommandContext", command: "DEFINITELY_NEVER_GOING_TO_BE_A_GOOD_COMMAND", command_prefix: :DEFINITELY_NEVER_GOING_TO_BE_A_GOOD_COMMAND)
       subject.execute(context)
     end
 
     it "dispatches a good command to the Proc" do
       TestCommand.command :testing_good_command do; "Pass"; end
-      context = double("CommandContext", command: "testing_good_command")
+      context = double("CommandContext", command: "testing_good_command", command_prefix: :testing_good_command)
       expect(context).to receive(:instance_eval).and_yield
       subject.execute(context)
     end
