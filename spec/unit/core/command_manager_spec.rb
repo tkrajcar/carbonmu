@@ -6,27 +6,10 @@ describe CommandManager do
   end
 
   context '#add' do
-    it 'registers and stores a Proc' do
-      subject.add :test_command_manager do; "Foo"; end
-      subject.commands[:test_command_manager][:block].should be_a(Proc)
-    end
-  end
-
-  context "#add_syntax" do
-    it "stores a syntax" do
-      subject.add :test_syntax_storage do; "Foo"; end
-      matcher = /foo/
-      subject.add_syntax :test_syntax_storage, matcher
-      subject.commands[:test_syntax_storage][:syntax].should eq([matcher])
-    end
-
-    it "stores multiple syntaxes in order received" do
-      subject.add :test_multi_syntax_storage do; "Foo"; end
-      matcher1 = /foo/
-      matcher2 = /bar/
-      subject.add_syntax :test_multi_syntax_storage, matcher1
-      subject.add_syntax :test_multi_syntax_storage, matcher2
-      subject.commands[:test_multi_syntax_storage][:syntax].should eq([matcher1, matcher2])
+    it 'registers and stores a Command' do
+      c = double("Command", prefix: "foo")
+      subject.add c
+      subject.commands[:foo].should eq(c)
     end
   end
 
@@ -37,10 +20,11 @@ describe CommandManager do
       subject.execute(context)
     end
 
-    it "dispatches a good command to the Proc" do
-      subject.add :testing_good_command do; "Pass"; end
+    it "calls .execute on a good command" do
+      command = double("Command", prefix: "testing_good_command")
+      subject.add command
       context = double("CommandContext", command: "testing_good_command", command_prefix: :testing_good_command)
-      expect(context).to receive(:instance_eval).and_yield
+      expect(command).to receive(:execute).with(context)
       subject.execute(context)
     end
   end

@@ -1,7 +1,8 @@
 module CarbonMU
   class RebootCommand
-    CommandManager.add :reboot do
+    c = Command.new(prefix: :reboot) do
       Reboot.reboot
     end
+    CommandManager.add(c)
   end
 end

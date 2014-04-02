@@ -1,14 +1,9 @@
 module CarbonMU
   module CommandManager
 
-    def self.add(name, options = {}, &block)
+    def self.add(command)
       @commands ||= {}
-      @commands[name.to_sym] = { block: block }.merge(options)
-    end
-
-    def self.add_syntax(command_name, syntax)
-      @commands[command_name][:syntax] ||= []
-      @commands[command_name][:syntax] << syntax
+      @commands[command.prefix.to_sym] = command
     end
 
     def self.commands
@@ -17,7 +12,7 @@ module CarbonMU
 
     def self.execute(command_context)
       if command = CommandManager.commands[command_context.command_prefix]
-        command_context.instance_eval &command[:block]
+        command.execute(command_context)
       else
         # TODO handle a bad command
         Notify.all("bad command #{command_context.command_prefix}")

@@ -7,10 +7,11 @@ module CarbonMU
   end
 
   class PersistCommand
-    CommandManager.add :persist do
+    c = Command.new(prefix: :persist) do
       p = MyPersist.new
       p.foo = "hi"
       p.save
     end
+    CommandManager.add(c)
   end
 end
