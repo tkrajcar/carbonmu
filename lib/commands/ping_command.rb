@@ -1,6 +1,6 @@
 module CarbonMU
-  class PingCommand < Command
-    command do
+  class PingCommand
+    CommandManager.add :ping do
       Notify.one(enacting_connection, "PONG")
     end
   end

@@ -1,7 +1,5 @@
 require 'spec_helper'
 
-class TestCommand < Command; end
-
 describe CommandManager do
   it 'prevents instantiation' do
     expect { subject.new }.to raise_error(NoMethodError)
@@ -40,7 +38,7 @@ describe CommandManager do
     end
 
     it "dispatches a good command to the Proc" do
-      TestCommand.command :testing_good_command do; "Pass"; end
+      subject.add :testing_good_command do; "Pass"; end
       context = double("CommandContext", command: "testing_good_command", command_prefix: :testing_good_command)
       expect(context).to receive(:instance_eval).and_yield
       subject.execute(context)

@@ -1,9 +1,9 @@
 module CarbonMU
-  class SayCommand < Command
-    command do
+  class SayCommand
+    CommandManager.add :say do
       Notify.all("#{enacting_connection.id} spoke.")
     end
 
-    syntax /TODO/
+    CommandManager.add_syntax :say, /TODO/
   end
 end

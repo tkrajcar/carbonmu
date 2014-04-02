@@ -1,8 +1,9 @@
 module CarbonMU
   module CommandManager
-    def self.add(prefix, options = {}, &block)
+
+    def self.add(name, options = {}, &block)
       @commands ||= {}
-      @commands[prefix.to_sym] = { block: block }.merge(options)
+      @commands[name.to_sym] = { block: block }.merge(options)
     end
 
     def self.add_syntax(command_name, syntax)
