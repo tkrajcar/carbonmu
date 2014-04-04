@@ -11,7 +11,7 @@ describe Command do
   it "can execute itself" do
     c = Command.new(prefix: "foo", syntax: [1, 2]) do; "pass"; end
     context = double("CommandContext", command: "foo", command_prefix: :testing_good_command)
-    expect(context).to receive(:instance_eval).and_yield
+    expect(context).to receive(:execute).with(c.block)
     c.execute(context)
   end
 end

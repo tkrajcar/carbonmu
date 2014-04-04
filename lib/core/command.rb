@@ -10,7 +10,7 @@ module CarbonMU
     end
 
     def execute(context)
-      context.instance_eval &@block
+      context.execute(@block)
     end
   end
 end

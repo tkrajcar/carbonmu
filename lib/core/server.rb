@@ -47,8 +47,7 @@ module CarbonMU
     end
 
     def handle_command(input, connection_id)
-      context = CommandContext.new(enacting_connection: ConnectionManager[connection_id], command: input)
-      Parser.parse(context)
+      Parser.parse(connection_id, input)
     end
 
     def send_server_started_to_overlord
