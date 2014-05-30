@@ -12,19 +12,15 @@ module CarbonMU
 
     def load_params
       command.syntax.each do |syntax|
-        puts "Checking #{syntax}"
-        puts syntax.match(@raw_command)
-        if(syntax.match @raw_command)
-          puts "Match found! Text is #{text}"
+        if matchdata = syntax.match(raw_command)
+          matchdata.names.each { |k| @params[k.to_sym] = matchdata[k] }
+          break
         end
-        puts "All done with #{syntax}"
       end
-      puts "All done checking load_params"
     end
 
     def execute
       load_params if command.syntax
-      puts "Params loaded."
       self.instance_eval &@command.block
     end
   end
