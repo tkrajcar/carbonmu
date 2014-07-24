@@ -5,7 +5,7 @@ describe Notify do
     it "writes to all connections with the input specified" do
       connection = double("connection")
       ConnectionManager.stub(:connections) { [connection] }
-      connection.should_receive(:write).with("foo")
+      connection.should_receive(:write).with("foo\n")
       Notify.all("foo")
     end
   end
@@ -13,7 +13,7 @@ describe Notify do
   context '.one' do
     it "writes to the connection specified with the input" do
       connection = double("connection")
-      connection.should_receive(:write).with("foo")
+      connection.should_receive(:write).with("foo\n")
       Notify.one(connection, "foo")
     end
   end
