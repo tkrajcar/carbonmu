@@ -1,5 +1,15 @@
 module CarbonMU
   module Persistable
+    attr_reader :_created
+
+    def self.universal_fields
+      [:_id, :_class, :_created]
+    end
+
+    def initialize
+      @_created = DateTime.now
+    end
+
     def _id=(value)
       raise RuntimeError, "Can't assign a _id to an object that already has one" unless @_id.nil?
       @_id = value
@@ -7,6 +17,10 @@ module CarbonMU
 
     def _id
       @_id ||= SecureRandom.uuid
+    end
+
+    def _class
+      self.class.name
     end
 
     def self.included(base)
@@ -18,8 +32,7 @@ module CarbonMU
     end
 
     def as_hash
-      additional_fields = {_id: _id, _class: self.class.name}
-      Hash[fields.map {|k| [k.to_sym, self.send(k)] }].merge(additional_fields)
+      Hash[fields.map {|k| [k.to_sym, self.send(k)] }]
     end
 
     def fields
@@ -30,7 +43,7 @@ module CarbonMU
       def self.extended(base)
         base.instance_eval do
           class << self; attr_reader :fields; end
-          @fields = []
+          @fields = Persistable.universal_fields
         end
       end
 

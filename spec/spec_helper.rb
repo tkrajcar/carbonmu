@@ -3,6 +3,7 @@ require "codeclimate-test-reporter"
 CodeClimate::TestReporter.start
 
 require 'bundler'
+require 'timecop'
 Bundler.setup(:default, :test)
 
 require_relative '../lib/carbonmu.rb'

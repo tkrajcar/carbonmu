@@ -75,10 +75,12 @@ describe Persistable do
   end
 
   it "knows how to convert itself into a hash" do
-    tester = TestPersisted.new
-    tester.foo = "bar"
-    expected_hash = {_id: tester._id, foo: "bar", read_only_foo: nil, _class: "TestPersisted"}
-    tester.as_hash.should eq(expected_hash)
+    Timecop.freeze do
+      tester = TestPersisted.new
+      tester.foo = "bar"
+      expected_hash = {_id: tester._id, foo: "bar", read_only_foo: nil, _class: "TestPersisted", _created: DateTime.now}
+      tester.as_hash.should eq(expected_hash)
+    end
   end
 
   context ".from_hash" do
@@ -93,6 +95,19 @@ describe Persistable do
     it "raises an error if called with a hash that doesn't include _class" do
       input_hash = {foo: 'bar'}
       expect { TestPersisted.from_hash(input_hash) }.to raise_error(ArgumentError)
+    end
+  end
+
+  context "_created" do
+    it "sets a created timestamp automatically" do
+      Timecop.freeze do
+        tester = TestPersisted.new
+        tester._created.should eq(DateTime.now)
+      end
+    end
+    it "won't let you set _created" do
+      tester = TestPersisted.new
+      expect {tester._created = "foo"}.to raise_error(NoMethodError)
     end
   end
 end
