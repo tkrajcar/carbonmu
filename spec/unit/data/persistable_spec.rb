@@ -54,17 +54,9 @@ describe Persistable do
       tester._id.should_not eq(other_tester._id)
     end
 
-    it "allows for setting _id" do
+    it "doesn't allow for setting _id" do
       tester = TestPersisted.new
-      tester._id = "abc123"
-      tester._id.should eq("abc123")
-    end
-
-    it "doesn't allow setting _id twice" do
-      tester = TestPersisted.new
-      tester._id = "abc123"
-      expect {tester._id = "def234"}.to raise_error(RuntimeError)
-      tester._id.should eq("abc123")
+      expect {tester._id = "abc123"}.to raise_error(NoMethodError)
     end
   end
 
@@ -85,11 +77,13 @@ describe Persistable do
 
   context ".from_hash" do
     it "knows how to convert a hash back into an instance of itself" do
-      input_hash = {"_id" => "abc123", "foo" => "bar", "_class" => "TestPersisted"}
+      dt = DateTime.now
+      input_hash = {"_id" => "abc123", "foo" => "bar", "_class" => "TestPersisted", "_created" => dt}
       obj = TestPersisted.from_hash(input_hash)
       obj.should be_a(TestPersisted)
       obj._id.should eq("abc123")
       obj.foo.should eq("bar")
+      obj._created.should eq(dt)
     end
 
     it "raises an error if called with a hash that doesn't include _class" do

@@ -1,22 +1,14 @@
 module CarbonMU
   module Persistable
-    attr_reader :_created
+    attr_reader :_created, :_id
 
     def self.universal_fields
-      [:_id, :_class, :_created]
+      ["_id", "_class", "_created"]
     end
 
-    def initialize
-      @_created = DateTime.now
-    end
-
-    def _id=(value)
-      raise RuntimeError, "Can't assign a _id to an object that already has one" unless @_id.nil?
-      @_id = value
-    end
-
-    def _id
-      @_id ||= SecureRandom.uuid
+    def initialize(params = Hash.new)
+      @_id = params["_id"] || SecureRandom.uuid
+      @_created = params["_created"] || DateTime.now
     end
 
     def _class
@@ -60,9 +52,9 @@ module CarbonMU
       def from_hash(hash)
         raise ArgumentError, "called from_hash with a hash that does not contain _class" unless hash.has_key?("_class")
         klass = Object.const_get(hash["_class"])
-        obj = klass.new
+        obj = klass.new(hash.select {|k,v| Persistable.universal_fields.include? k}) # Pass all universal fields into constructor.
         hash.each do |k, v|
-          next if k == "_class"
+          next if Persistable.universal_fields.include?(k)
           obj.send("#{k}=", "#{v}")
         end
         obj
