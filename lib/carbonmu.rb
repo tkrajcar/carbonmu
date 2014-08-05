@@ -2,6 +2,7 @@ require 'rubygems'
 require 'bundler/setup'
 
 require 'require_all'
+require 'colorize' # An exception to our require-where-used rule, since it's likely to be used many places.
 require_all 'lib'
 
 Celluloid::ZMQ.init

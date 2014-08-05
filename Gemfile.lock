@@ -14,6 +14,7 @@ GEM
     codeclimate-test-reporter (0.3.0)
       simplecov (>= 0.7.1, < 1.0.0)
     coderay (1.1.0)
+    colorize (0.7.3)
     diff-lcs (1.2.5)
     docile (1.1.3)
     ffi (1.9.3)
@@ -56,6 +57,7 @@ DEPENDENCIES
   celluloid-io (~> 0.15.0)
   celluloid-zmq (= 0.16.0.pre)
   codeclimate-test-reporter
+  colorize (~> 0.7.3)
   multi_json (~> 1.9.2)
   oj (~> 2.6.1)
   pry
