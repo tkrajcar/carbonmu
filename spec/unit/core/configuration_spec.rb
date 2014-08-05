@@ -25,7 +25,13 @@ describe Configuration do
     end
 
     it "doesn't allow an invalid logger" do
-      expect { config.logger = Object.new }.to raise_error(ArgumentError) 
+      expect { config.logger = Object.new }.to raise_error(ArgumentError)
+    end
+  end
+
+  describe '#log_ipc_traffic' do
+    it 'has a log_ipc_traffic setting' do
+      expect(config.log_ipc_traffic).to be_boolean
     end
   end
 end

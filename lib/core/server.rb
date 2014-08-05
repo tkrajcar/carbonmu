@@ -56,7 +56,7 @@ module CarbonMU
 
     def handle_overlord_message(input)
       message = IPCMessage.unserialize(input)
-      info "SERVER RECEIVE: #{message}"
+      debug "SERVER RECEIVE: #{message}" if CarbonMU.configuration.log_ipc_traffic
       case message.op
       when :command
         handle_command(message.command, message.connection_id)
@@ -87,7 +87,7 @@ module CarbonMU
 
     def send_message_to_overlord(op, params={})
       message = IPCMessage.new(op, params)
-      info "SERVER SEND: #{message}"
+      debug "SERVER SEND: #{message}" if CarbonMU.configuration.log_ipc_traffic
       @ipc_writer.send message.serialize
     end
   end

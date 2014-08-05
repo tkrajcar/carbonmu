@@ -29,7 +29,7 @@ module CarbonMU
     end
 
     def handle_server_started(pid, port)
-      info "*** Overlord received server IPC start. Pid #{pid}, port #{port}."
+      debug "*** Overlord received server IPC start. Pid #{pid}, port #{port}." if CarbonMU.configuration.log_ipc_traffic
       @current_server_pid = pid
       Process.detach(pid)
       @ipc_writer = WriteSocket.new(port)
@@ -70,7 +70,7 @@ module CarbonMU
 
     def send_message_to_server(op, params={})
       message = IPCMessage.new(op, params)
-      info "OVERLORD SEND: #{message}"
+      debug "OVERLORD SEND: #{message}" if CarbonMU.configuration.log_ipc_traffic
       @ipc_writer.send message.serialize
     end
 
@@ -82,7 +82,7 @@ module CarbonMU
 
     def handle_server_message(input)
       message = IPCMessage.unserialize(input)
-      info "OVERLORD RECEIVE: #{message}"
+      debug "OVERLORD RECEIVE: #{message}" if CarbonMU.configuration.log_ipc_traffic
       case message.op
       when :started
         handle_server_started(message.pid, message.port)
