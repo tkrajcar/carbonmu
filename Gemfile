@@ -20,4 +20,5 @@ end
 
 group :test do
   gem "codeclimate-test-reporter", require: nil
+  gem "simplecov", "~> 0.9"
 end
