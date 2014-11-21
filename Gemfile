@@ -1,10 +1,10 @@
 source 'https://rubygems.org/'
 
-gem "celluloid-io", "~> 0.15.0"
+gem "celluloid-io", "~> 0.16.1"
 gem "require_all"
 gem "multi_json", "~> 1.9.2"
 gem "oj", "~> 2.6.1", platforms: [:ruby]
-gem "celluloid-zmq", "0.16.0.pre"
+gem "celluloid-zmq", "~> 0.16.0"
 gem "colorize", "~> 0.7.3"
 
 group :development do

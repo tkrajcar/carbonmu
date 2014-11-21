@@ -2,12 +2,12 @@ GEM
   remote: https://rubygems.org/
   specs:
     awesome_print (1.2.0)
-    celluloid (0.15.2)
-      timers (~> 1.1.0)
-    celluloid-io (0.15.0)
-      celluloid (>= 0.15.0)
-      nio4r (>= 0.5.0)
-    celluloid-zmq (0.16.0.pre)
+    celluloid (0.16.0)
+      timers (~> 4.0.0)
+    celluloid-io (0.16.1)
+      celluloid (>= 0.16.0)
+      nio4r (>= 1.0.0)
+    celluloid-zmq (0.16.0)
       celluloid (>= 0.15.0)
       ffi
       ffi-rzmq
@@ -17,14 +17,15 @@ GEM
     colorize (0.7.3)
     diff-lcs (1.2.5)
     docile (1.1.5)
-    ffi (1.9.3)
+    ffi (1.9.6)
     ffi-rzmq (2.0.1)
       ffi-rzmq-core (>= 1.0.1)
     ffi-rzmq-core (1.0.3)
       ffi (~> 1.9)
+    hitimes (1.2.2)
     method_source (0.8.2)
     multi_json (1.9.3)
-    nio4r (1.0.0)
+    nio4r (1.0.1)
     oj (2.6.1)
     pry (0.9.12.6)
       coderay (~> 1.0)
@@ -47,15 +48,16 @@ GEM
     simplecov-html (0.8.0)
     slop (3.5.0)
     timecop (0.7.1)
-    timers (1.1.0)
+    timers (4.0.1)
+      hitimes
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   awesome_print
-  celluloid-io (~> 0.15.0)
-  celluloid-zmq (= 0.16.0.pre)
+  celluloid-io (~> 0.16.1)
+  celluloid-zmq (~> 0.16.0)
   codeclimate-test-reporter
   colorize (~> 0.7.3)
   multi_json (~> 1.9.2)
