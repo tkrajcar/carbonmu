@@ -1,16 +1,26 @@
 module CarbonMU
   class Command
-    attr_reader :prefix, :syntax, :block
+    class << self
+      def syntax(value)
+        @syntaxes ||= []
+        @syntaxes << value
+        Parser.register_syntax(value, self)
+      end
 
-    def initialize(params = {}, &block)
-      raise ArgumentError, "expected block" unless block_given?
-      @prefix = params[:prefix]
-      @syntax = params[:syntax]
-      @block = block
+      def syntaxes
+        @syntaxes
+      end
     end
 
-    def execute(context)
-      context.execute(@block)
+    attr_reader :context
+
+    def initialize(context)
+      @context = context
+      @params = context.params
+    end
+
+    def execute
+      raise NotImplementedError
     end
   end
 end

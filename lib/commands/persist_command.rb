@@ -6,12 +6,13 @@ module CarbonMU
     field :foo
   end
 
-  class PersistCommand
-    c = Command.new(prefix: :persist) do
+  class PersistCommand < Command
+    syntax "persist"
+
+    def execute(context)
       p = MyPersist.new
       p.foo = "hi"
       p.save
     end
-    CommandManager.add(c)
   end
 end

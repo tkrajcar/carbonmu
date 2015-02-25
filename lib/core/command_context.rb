@@ -1,27 +1,11 @@
 module CarbonMU
   class CommandContext
-    attr_reader :enactor, :enacting_connection_id, :raw_command, :command, :params
+    attr_reader :enacting_connection_id, :raw_command, :params
 
-    def initialize(params)
-      @enactor = params[:enactor] || nil
-      @enacting_connection_id = params[:enacting_connection_id] || nil
-      @raw_command = params[:raw_command] || ""
-      @command = params[:command] || nil
-      @params = {}
-    end
-
-    def load_params
-      command.syntax.each do |syntax|
-        if matchdata = syntax.match(raw_command)
-          matchdata.names.each { |k| @params[k.to_sym] = matchdata[k] }
-          break
-        end
-      end
-    end
-
-    def execute
-      load_params if command.syntax
-      self.instance_eval &@command.block
+    def initialize(opts)
+      @enacting_connection_id = opts[:enacting_connection_id] || nil
+      @raw_command = opts[:raw_command] || ""
+      @params = opts[:params] || {}
     end
   end
 end
