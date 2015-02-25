@@ -7,7 +7,8 @@ describe Parser do
 
   context '.parse' do
     it "handles a bad command" do
-      Notify.should_receive(:all) #TODO
+      expect_any_instance_of(UnknownCommand).to receive(:execute)
+
       subject.parse(1, "DEFINITELY_NEVER_GOING_TO_BE_A_GOOD_COMMAND")
     end
 
