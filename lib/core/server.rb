@@ -9,8 +9,11 @@ module CarbonMU
 
     finalizer :shutdown
 
+    attr_reader :connections
+
     def initialize
       info "*** Starting CarbonMU game server to connect to edge router port #{CarbonMU.edge_router_receive_port}."
+      CarbonMU.server = Actor.current
 
       @ipc_reader = ReadSocket.new
       @ipc_writer = WriteSocket.new(CarbonMU.edge_router_receive_port)
@@ -34,16 +37,12 @@ module CarbonMU
     end
 
     def add_connection(connection_id)
-      new_conn = ServerConnection.new(connection_id, Actor.current)
-      ConnectionManager.add(new_conn)
+      @connections ||= []
+      @connections << connection_id
     end
 
     def remove_connection(connection_id)
-      ConnectionManager.remove_by_id(connection_id)
-    end
-
-    def connections
-      ConnectionManager.connections
+      @connections.delete(connection_id)
     end
 
     def handle_command(input, connection_id)
@@ -79,6 +78,10 @@ module CarbonMU
 
     def send_reboot_message_to_edge_router
       send_message_to_edge_router(:reboot)
+    end
+
+    def write_to_all_connections(str)
+      connections.each {|c| write_to_connection(c, str) }
     end
 
     def write_to_connection(connection_id, str)

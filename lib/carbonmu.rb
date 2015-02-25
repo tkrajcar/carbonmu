@@ -11,6 +11,7 @@ module CarbonMU
   class << self
     attr_accessor :configuration
     attr_accessor :edge_router_receive_port
+    attr_accessor :server
   end
   self.configuration = Configuration.new
 

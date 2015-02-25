@@ -1,10 +1,10 @@
 module CarbonMU
   class CommandContext
-    attr_reader :enactor, :enacting_connection, :raw_command, :command, :params
+    attr_reader :enactor, :enacting_connection_id, :raw_command, :command, :params
 
     def initialize(params)
       @enactor = params[:enactor] || nil
-      @enacting_connection = params[:enacting_connection] || nil
+      @enacting_connection_id = params[:enacting_connection_id] || nil
       @raw_command = params[:raw_command] || ""
       @command = params[:command] || nil
       @params = {}

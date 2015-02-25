@@ -3,7 +3,7 @@ module CarbonMU
     def self.parse(enacting_connection_id, input)
       prefix = command_to_prefix(input)
       if command = CommandManager.commands[prefix]
-        context = CommandContext.new(enacting_connection: ConnectionManager[enacting_connection_id], raw_command: input, command: command)
+        context = CommandContext.new(enacting_connection_id: enacting_connection_id, raw_command: input, command: command)
         context.execute
       else
         # TODO handle a bad command

@@ -10,7 +10,7 @@ module CarbonMU
     def initialize
       @game_name = 'CarbonMU'
       @logger = Celluloid.logger.tap { |i| i.progname = @game_name }
-      @log_ipc_traffic = false
+      @log_ipc_traffic = true
     end
 
     def logger=(logger)
