@@ -19,7 +19,7 @@ module CarbonMU
 
     def handle_input(input)
       input.chomp!
-      Actor[:overlord].async.send_command_to_server(input, id)
+      Actor[:edge_router].async.send_command_to_server(input, id)
     end
 
     def run
@@ -28,7 +28,7 @@ module CarbonMU
 
     def shutdown
       before_shutdown
-      Actor[:overlord].async.remove_connection(Actor.current)
+      Actor[:edge_router].async.remove_connection(Actor.current)
     end
 
     def before_shutdown

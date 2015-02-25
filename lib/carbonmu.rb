@@ -10,7 +10,7 @@ Celluloid::ZMQ.init
 module CarbonMU
   class << self
     attr_accessor :configuration
-    attr_accessor :overlord_receive_port
+    attr_accessor :edge_router_receive_port
   end
   self.configuration = Configuration.new
 
@@ -19,11 +19,11 @@ module CarbonMU
   end
 
   def self.start
-    OverlordSupervisionGroup.run
+    EdgeRouterSupervisionGroup.run
   end
 
   def self.start_in_background
-    OverlordSupervisionGroup.run!
+    EdgeRouterSupervisionGroup.run!
   end
 
   def self.start_server

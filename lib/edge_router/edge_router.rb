@@ -3,7 +3,7 @@ require 'celluloid/io'
 require 'celluloid/zmq'
 
 module CarbonMU
-  class Overlord
+  class EdgeRouter
     include Celluloid::IO
     include Celluloid::Logger
     include Celluloid::ZMQ
@@ -13,12 +13,12 @@ module CarbonMU
     attr_reader :receptors, :connections
 
     def initialize(host, port)
-      info "*** Starting CarbonMU overlord."
+      info "*** Starting CarbonMU edge router."
       @receptors = TelnetReceptor.new(host,port)
       @connections = []
 
       @ipc_reader = ReadSocket.new
-      info "*** Overlord waiting for IPC on port #{@ipc_reader.port_number}"
+      info "*** Edge router waiting for IPC on port #{@ipc_reader.port_number}"
       async.run
 
       start_server
@@ -29,7 +29,7 @@ module CarbonMU
     end
 
     def handle_server_started(pid, port)
-      debug "*** Overlord received server IPC start. Pid #{pid}, port #{port}." if CarbonMU.configuration.log_ipc_traffic
+      debug "*** Edge router received server IPC start. Pid #{pid}, port #{port}." if CarbonMU.configuration.log_ipc_traffic
       @current_server_pid = pid
       Process.detach(pid)
       @ipc_writer = WriteSocket.new(port)
@@ -70,7 +70,7 @@ module CarbonMU
 
     def send_message_to_server(op, params={})
       message = IPCMessage.new(op, params)
-      debug "OVERLORD SEND: #{message}" if CarbonMU.configuration.log_ipc_traffic
+      debug "EDGE ROUTER SEND: #{message}" if CarbonMU.configuration.log_ipc_traffic
       @ipc_writer.send message.serialize
     end
 
@@ -82,7 +82,7 @@ module CarbonMU
 
     def handle_server_message(input)
       message = IPCMessage.unserialize(input)
-      debug "OVERLORD RECEIVE: #{message}" if CarbonMU.configuration.log_ipc_traffic
+      debug "EDGE ROUTER RECEIVE: #{message}" if CarbonMU.configuration.log_ipc_traffic
       case message.op
       when :started
         handle_server_started(message.pid, message.port)

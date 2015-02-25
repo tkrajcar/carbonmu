@@ -24,7 +24,7 @@ module CarbonMU
 
     def handle_connection(socket)
       tc = TelnetConnection.new(socket)
-      Actor[:overlord].add_connection(tc)
+      Actor[:edge_router].add_connection(tc)
     end
   end
 end
