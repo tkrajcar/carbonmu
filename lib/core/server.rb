@@ -46,7 +46,7 @@ module CarbonMU
     end
 
     def handle_command(input, connection_id)
-      Parser.parse(connection_id, input)
+      Parser.parse_and_execute(connection_id, input)
     end
 
     def send_server_started_to_edge_router

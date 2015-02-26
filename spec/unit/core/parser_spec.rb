@@ -5,16 +5,16 @@ describe Parser do
     syntax "testing_good_command"
   end
 
-  context '.parse' do
+  context '.parse_and_execute' do
     it "handles a bad command" do
       expect_any_instance_of(UnknownCommand).to receive(:execute)
 
-      subject.parse(1, "DEFINITELY_NEVER_GOING_TO_BE_A_GOOD_COMMAND")
+      subject.parse_and_execute(1, "DEFINITELY_NEVER_GOING_TO_BE_A_GOOD_COMMAND")
     end
 
     it "calls .execute on a good command" do
       expect_any_instance_of(ParseTestCommand).to receive(:execute)
-      subject.parse(1, "testing_good_command")
+      subject.parse_and_execute(1, "testing_good_command")
     end
   end
 
