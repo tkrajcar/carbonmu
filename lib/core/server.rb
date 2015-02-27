@@ -19,9 +19,6 @@ module CarbonMU
       @ipc_writer = WriteSocket.new(CarbonMU.edge_router_receive_port)
       send_server_started_to_edge_router
 
-      EmbeddedDataEngine.supervise_as :data_engine
-      Actor[:data_engine].load_all
-
       async.run
       retrieve_existing_connections
     end
