@@ -14,11 +14,8 @@ group :development do
 end
 
 group :development, :test do
-  gem "rspec"
+  gem 'guard', '~> 2.12.4'
+  gem 'guard-rspec', '~> 4.5.0'
+  gem "rspec", "~> 3.2.0"
   gem "timecop"
-end
-
-group :test do
-  gem "codeclimate-test-reporter", require: nil
-  gem "simplecov", "~> 0.9"
 end
