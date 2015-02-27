@@ -3,24 +3,24 @@ require 'spec_helper'
 describe IPCMessage do
   it "sets its operation properly" do
     ipc = IPCMessage.new(:started)
-    ipc.op.should eq(:started)
+    expect(ipc.op).to eq(:started)
   end
 
   it "supports equality" do
     ipc1 = IPCMessage.new(:write, connection_id: "123", output: "foo")
     ipc2 = IPCMessage.new(:write, connection_id: "123", output: "foo")
-    ipc1.should eq(ipc2)
+    expect(ipc1).to eq(ipc2)
   end
 
   it "accepts op parameters" do
     ipc = IPCMessage.new(:write, connection_id: "123", output: "foo")
-    ipc.params[:connection_id].should eq("123")
-    ipc.params[:output].should eq("foo")
+    expect(ipc.params[:connection_id]).to eq("123")
+    expect(ipc.params[:output]).to eq("foo")
   end
 
   it "supports direct method access for op parameters" do
     ipc = IPCMessage.new(:write, connection_id: "123", output: "foo")
-    ipc.params[:connection_id].should eq(ipc.connection_id)
+    expect(ipc.params[:connection_id]).to eq(ipc.connection_id)
   end
 
   it "enforces required op parameters" do
@@ -34,6 +34,6 @@ describe IPCMessage do
   it "knows how to serialize and unserialize itself" do
     original = IPCMessage.new(:write, connection_id: "123", output: "foo")
     round_trip = IPCMessage.unserialize(original.serialize)
-    round_trip.should eq(original)
+    expect(round_trip).to eq(original)
   end
 end

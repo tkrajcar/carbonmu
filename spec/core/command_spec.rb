@@ -7,12 +7,12 @@ end
 
 describe Command do
   it "keeps track of defined syntaxes" do
-    TestCommand.syntaxes.should eq ["bar", /foo/]
+    expect(TestCommand.syntaxes).to eq(["bar", /foo/])
   end
 
   it "sends syntaxes to parser" do
-    Parser.should_receive(:register_syntax).with("baz", duck_type(:syntax))
-    Parser.should_receive(:register_syntax).with("bat", duck_type(:syntax))
+    expect(Parser).to receive(:register_syntax).with("baz", duck_type(:syntax))
+    expect(Parser).to receive(:register_syntax).with("bat", duck_type(:syntax))
 
     class ParseTestCommand < Command
       syntax "baz"
@@ -27,7 +27,7 @@ describe Command do
 
     it "stores its context" do
       my_command = Command.new(@context)
-      my_command.context.should eq(@context)
+      expect(my_command.context).to eq(@context)
     end
 
     it "raises if .execute called directly on Command" do

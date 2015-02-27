@@ -6,8 +6,8 @@ describe CommandContext do
     command = "FOO"
     params = {boo: "bot"}
     cc = CommandContext.new(enacting_connection_id: connection_id, raw_command: command, params: params)
-    cc.enacting_connection_id.should eq(connection_id)
-    cc.raw_command.should eq(command)
-    cc.params.should eq(params)
+    expect(cc.enacting_connection_id).to eq(connection_id)
+    expect(cc.raw_command).to eq(command)
+    expect(cc.params).to eq(params)
   end
 end

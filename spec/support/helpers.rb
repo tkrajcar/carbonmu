@@ -1,7 +1,7 @@
 module Helpers
   def stub_carbonmu_server
     server = double("Server")
-    CarbonMU.stub(:server) { server }
+    allow(CarbonMU).to receive(:server) { server }
     server
   end
 

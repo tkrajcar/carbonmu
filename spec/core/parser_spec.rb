@@ -22,7 +22,7 @@ describe Parser do
     it "remembers a given syntax and class" do
       class TestEmptyClass; end
       Parser.register_syntax("foo", TestEmptyClass)
-      Parser.syntaxes["foo"].should eq(TestEmptyClass)
+      expect(Parser.syntaxes["foo"]).to eq(TestEmptyClass)
     end
   end
 end
