@@ -5,4 +5,5 @@ require './lib/carbonmu.rb'
 require 'awesome_print'
 require 'pry'
 
+CarbonMU::Server.initialize_database
 Pry.start CarbonMU
