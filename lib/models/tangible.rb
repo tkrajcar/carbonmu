@@ -4,7 +4,7 @@ module CarbonMU
 
     field :name, type: String
     field :description, type: String
-    field :_special, type: String
+    field :_special, type: Symbol
 
     validates_uniqueness_of :_special, allow_blank: true
     has_many :contents, class_name: "CarbonMU::Movable", foreign_key: :location
