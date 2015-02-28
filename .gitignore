@@ -1,4 +1,3 @@
 .yardoc
 .*.swp
 coverage
-db/*.json
