@@ -6,6 +6,8 @@ module CarbonMU
     field :description, type: String
     field :_special, type: Symbol
 
+    index({ _special: 1 }, { unique: true })
+
     validates_uniqueness_of :_special, allow_blank: true
     has_many :contents, class_name: "CarbonMU::Movable", foreign_key: :location
   end
