@@ -21,6 +21,7 @@ module CarbonMU
       send_server_started_to_edge_router
 
       Server.initialize_database
+      Server.create_starter_objects
 
       async.run
       retrieve_existing_connections
@@ -98,14 +99,12 @@ module CarbonMU
       Mongoid.logger.level = ::Logger::DEBUG
       Mongoid.load!("mongoid.yml", ENV["MONGOID_ENV"] || :production)
       ::Mongoid::Tasks::Database.create_indexes
-
-      create_starter_objects
     end
 
     def self.create_starter_objects
       ensure_special_exists(:starting_room, Room, {name: "Starting Room", description: "This is the starting room for newly-created players. Feel free to rename and re-describe it."})
       ensure_special_exists(:lostandfound_room, Room, {name: "Lost & Found Room", description: "This is the room where objects and players go if the thing that was holding them gets destroyed."})
-      ensure_special_exists(:superadmin_player, Player, {name: "Superadmin", description: "Obviously the most powerful of his race, it could kill us all.", location: Room.first})
+      ensure_special_exists(:superadmin_player, Player, {name: "Superadmin", description: "Obviously the most powerful of his race, it could kill us all."})
     end
 
     def self.ensure_special_exists(special, klass, attributes)
