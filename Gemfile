@@ -20,4 +20,5 @@ group :development, :test do
   gem "mongoid-rspec"
   gem "rspec", "~> 3.2.0"
   gem "timecop"
+  gem "database_cleaner", "~> 1.3.0"
 end

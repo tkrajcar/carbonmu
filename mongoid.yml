@@ -4,3 +4,9 @@ production:
       hosts:
         - localhost
       database: carbonmu
+testing:
+  sessions:
+    default:
+      hosts:
+        - localhost
+      database: carbonmu_test

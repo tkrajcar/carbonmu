@@ -96,7 +96,7 @@ module CarbonMU
 
     def self.initialize_database
       Mongoid.logger.level = ::Logger::DEBUG
-      Mongoid.load!("mongoid.yml", :production)
+      Mongoid.load!("mongoid.yml", ENV["MONGOID_ENV"] || :production)
       ::Mongoid::Tasks::Database.create_indexes
     end
 

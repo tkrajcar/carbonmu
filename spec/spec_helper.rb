@@ -15,11 +15,14 @@
 # The `.rspec` file also contains a few flags that are not defaults but that
 # users commonly want.
 
+ENV['MONGOID_ENV'] = "testing"
+
 require 'bundler'
 require 'timecop'
 require_relative '../lib/carbonmu.rb'
 require 'pry'
 require 'mongoid-rspec'
+require 'database_cleaner'
 
 Dir[File.dirname(__FILE__) + "/support/**/*.rb"].each {|f| require f}
 
@@ -33,6 +36,19 @@ RSpec.configure do |config|
   config.raise_errors_for_deprecations!
   config.include Helpers
   config.include Mongoid::Matchers
+
+  config.before(:suite) do
+    Server.initialize_database
+    DatabaseCleaner.strategy = :truncation
+    DatabaseCleaner.clean
+  end
+
+  config.around(:each) do |example|
+    DatabaseCleaner.cleaning do
+      example.run
+    end
+  end
+
 
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
