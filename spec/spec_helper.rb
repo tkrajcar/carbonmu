@@ -19,6 +19,7 @@ require 'bundler'
 require 'timecop'
 require_relative '../lib/carbonmu.rb'
 require 'pry'
+require 'mongoid-rspec'
 
 Dir[File.dirname(__FILE__) + "/support/**/*.rb"].each {|f| require f}
 
@@ -31,6 +32,7 @@ end
 RSpec.configure do |config|
   config.raise_errors_for_deprecations!
   config.include Helpers
+  config.include Mongoid::Matchers
 
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest

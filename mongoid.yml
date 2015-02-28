@@ -1,0 +1,6 @@
+production:
+  sessions:
+    default:
+      hosts:
+        - localhost
+      database: carbonmu

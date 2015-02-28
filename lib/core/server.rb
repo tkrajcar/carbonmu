@@ -1,5 +1,6 @@
 require 'celluloid/io'
 require 'celluloid/zmq'
+require 'mongoid'
 
 module CarbonMU
   class Server
@@ -18,6 +19,8 @@ module CarbonMU
       @ipc_reader = ReadSocket.new
       @ipc_writer = WriteSocket.new(CarbonMU.edge_router_receive_port)
       send_server_started_to_edge_router
+
+      Server.initialize_database
 
       async.run
       retrieve_existing_connections
@@ -90,5 +93,12 @@ module CarbonMU
       debug "SERVER SEND: #{message}" if CarbonMU.configuration.log_ipc_traffic
       @ipc_writer.send message.serialize
     end
+
+    def self.initialize_database
+      Mongoid.logger.level = ::Logger::DEBUG
+      Mongoid.load!("mongoid.yml", :production)
+      ::Mongoid::Tasks::Database.create_indexes
+    end
+
   end
 end
