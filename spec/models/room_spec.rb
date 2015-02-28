@@ -7,14 +7,12 @@ describe Room do
 
   context ".starting" do
     it "returns the actual starting room" do
-      Server.create_starter_objects
       expect(Room.starting._special).to eq(:starting_room)
     end
   end
 
   context ".lostandfound" do
     it "returns the actual lost & found room" do
-      Server.create_starter_objects
       expect(Room.lostandfound._special).to eq(:lostandfound_room)
     end
   end
