@@ -1,5 +1,5 @@
 module CarbonMU
-  class Tangible
+  class GameObject
     include Mongoid::Document
 
     field :name, type: String
@@ -9,6 +9,5 @@ module CarbonMU
     index(_special: 1)
 
     validates_uniqueness_of :_special, allow_blank: true
-    has_many :contents, class_name: "CarbonMU::Movable", foreign_key: :location
   end
 end

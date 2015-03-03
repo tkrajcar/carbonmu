@@ -1,6 +1,8 @@
 module CarbonMU
-  class Player < Movable
+  class Player < GameObject
     include Mongoid::Document
+    include Movable
+    include Container
 
     before_validation :default_location
 

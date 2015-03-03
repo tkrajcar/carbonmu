@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 describe Room do
-  it_behaves_like "a Tangible implementation"
+  it_behaves_like "a GameObject or descendant"
+  it_behaves_like "a Container"
 
   it { is_expected.to have_many(:incoming_exits).of_type(Exit).with_foreign_key(:destination) }
 

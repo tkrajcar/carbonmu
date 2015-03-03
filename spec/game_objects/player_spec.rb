@@ -1,7 +1,9 @@
 require 'spec_helper'
 
 describe Player do
-  it_behaves_like "a Movable implementation"
+  it_behaves_like "a GameObject or descendant"
+  it_behaves_like "a Movable"
+  it_behaves_like "a Container"
 
   it "gets a location of the starter room if not otherwise specified" do
     p = Player.create!(location: nil)

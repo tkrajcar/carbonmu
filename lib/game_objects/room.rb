@@ -1,8 +1,7 @@
-require_relative './movable.rb'
-
 module CarbonMU
-  class Room < Tangible
+  class Room < GameObject
     include Mongoid::Document
+    include Container
 
     has_many :incoming_exits, class_name: "CarbonMU::Exit", foreign_key: :destination
 
