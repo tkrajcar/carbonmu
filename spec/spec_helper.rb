@@ -33,6 +33,7 @@ end
 
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
+  config.filter_run_excluding :i18n => true
   config.raise_errors_for_deprecations!
   config.include Helpers
   config.include Mongoid::Matchers

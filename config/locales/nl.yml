@@ -1,0 +1,6 @@
+nl:
+  emits:
+    say: '%{name} zegt, "%{message}"'
+    pose: '%{name} %{message}'
+    semipose: '%{name}%{message}'
+    emit: '<%{name}> %{message}'

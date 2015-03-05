@@ -1,0 +1,6 @@
+en:
+  emits:
+    say: '%{name} says, "%{message}"'
+    pose: '%{name} %{message}'
+    semipose: '%{name}%{message}'
+    emit: '<%{name}> %{message}'

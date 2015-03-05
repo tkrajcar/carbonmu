@@ -34,5 +34,9 @@ module CarbonMU
   def self.start_server_in_background
     ServerSupervisionGroup.run!
   end
+
+  def self.t(str, *opts)
+    CarbonMU::Internationalization.translate(str, opts)
+  end
 end
 

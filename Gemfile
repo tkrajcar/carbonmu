@@ -7,6 +7,7 @@ gem "oj", "~> 2.6.1", platforms: [:ruby]
 gem "celluloid-zmq", "~> 0.16.0"
 gem "colorize", "~> 0.7.3"
 gem "mongoid", "~> 4.0.2"
+gem "i18n", "~> 0.7.0"
 
 group :development do
   gem "awesome_print"
@@ -21,4 +22,5 @@ group :development, :test do
   gem "rspec", "~> 3.2.0"
   gem "timecop"
   gem "database_cleaner", "~> 1.3.0"
+  gem "i18n-tasks", "~> 0.7.12"
 end
