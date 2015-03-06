@@ -5,7 +5,7 @@ describe Internationalization do
     it "loads the right loadpath" do
       # TODO fixy
       CarbonMU::Internationalization.setup
-      expect(I18n.load_path).to eq(["config/locales/en.yml"])
+      expect(I18n.load_path).to eq(["config/locales/en.yml", "config/locales/nl.yml"])
     end
   end
 

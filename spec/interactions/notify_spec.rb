@@ -11,15 +11,15 @@ describe Notify do
 
   context '.all' do
     it "writes to all connections with the input specified" do
-      expect(connection1).to receive(:write_translated).with("foo")
-      expect(connection2).to receive(:write_translated).with("foo")
+      expect(connection1).to receive(:write_translated).with("foo", {})
+      expect(connection2).to receive(:write_translated).with("foo", {})
       Notify.all("foo")
     end
   end
 
   context '.one' do
     it "writes to the connection specified with the input" do
-      expect(connection1).to receive(:write_translated).with("foo")
+      expect(connection1).to receive(:write_translated).with("foo", {})
       Notify.one(connection1, "foo")
     end
   end
