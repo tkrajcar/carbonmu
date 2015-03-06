@@ -1,7 +1,7 @@
 require 'forwardable'
 
 module CarbonMU
-  class TelnetConnection < Connection
+  class TelnetConnection < EdgeConnection
     extend Forwardable
     def_delegators :@socket, :close, :write
 

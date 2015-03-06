@@ -1,5 +1,5 @@
 module CarbonMU
-  class Connection
+  class EdgeConnection
     include Celluloid::IO
     include Celluloid::Logger
 
