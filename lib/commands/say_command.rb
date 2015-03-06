@@ -4,7 +4,7 @@ module CarbonMU
     syntax /^do (?<text>.*)/
 
     def execute
-      Notify.all("#{@context.enacting_connection.id} says, \"#{@params[:text].light_white}\"")
+      Notify.all("emits.say", {name: @context.enacting_connection.id, message: @params[:text].light_white})
     end
   end
 end

@@ -28,11 +28,11 @@ describe Connection do
     end
   end
 
-  context ".write" do
+  context ".write_translated" do
     it "sends .write to CarbonMU.server" do
       server = stub_carbonmu_server
       expect(server).to receive(:write_to_connection).with(id, expected_sent_message)
-      connection.write(message)
+      connection.write_translated(message)
     end
   end
 end
