@@ -13,6 +13,8 @@ module CarbonMU
     attr_reader :connections
 
     def initialize
+      Internationalization.setup
+
       info "*** Starting CarbonMU game server to connect to edge router port #{CarbonMU.edge_router_receive_port}."
       CarbonMU.server = Actor.current
 
