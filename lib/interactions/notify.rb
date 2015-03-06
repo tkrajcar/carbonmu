@@ -5,7 +5,7 @@ module CarbonMU
     end
 
     def self.one(connection, text)
-      connection.write(text + "\n")
+      connection.write(text)
     end
   end
 end

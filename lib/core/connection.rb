@@ -9,7 +9,7 @@ module CarbonMU
     end
 
     def write(msg)
-      CarbonMU.server.write_to_connection(id, msg)
+      CarbonMU.server.write_to_connection(id, msg + "\n")
     end
   end
 end
