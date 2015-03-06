@@ -1,11 +1,11 @@
 module CarbonMU
   class Notify
     def self.all(text)
-      CarbonMU.server.write_to_all_connections(text + "\n")
+      CarbonMU.server.connections.each { |c| one(c, text) }
     end
 
-    def self.one(connection_id, text)
-      CarbonMU.server.write_to_connection(connection_id, text + "\n")
+    def self.one(connection, text)
+      connection.write(text + "\n")
     end
   end
 end

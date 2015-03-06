@@ -1,9 +1,9 @@
 module CarbonMU
   module Parser
-    def self.parse_and_execute(enacting_connection_id, input)
+    def self.parse_and_execute(enacting_connection, input)
       command_class, params = parse(input)
 
-      context = CommandContext.new(enacting_connection_id: enacting_connection_id, raw_command: input, params: params)
+      context = CommandContext.new(enacting_connection: enacting_connection, raw_command: input, params: params)
       command_class.new(context).execute
     end
 

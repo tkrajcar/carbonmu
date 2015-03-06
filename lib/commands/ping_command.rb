@@ -3,7 +3,7 @@ module CarbonMU
     syntax "ping"
 
     def execute
-      Notify.one(@context.enacting_connection_id, "PONG")
+      Notify.one(@context.enacting_connection, "PONG")
     end
   end
 end

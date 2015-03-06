@@ -39,15 +39,20 @@ module CarbonMU
 
     def add_connection(connection_id)
       @connections ||= []
-      @connections << connection_id
+      @connections << Connection.new(connection_id)
     end
 
     def remove_connection(connection_id)
-      @connections.delete(connection_id)
+      @connections.delete_if { |c| c.id == connection_id }
     end
 
     def handle_command(input, connection_id)
-      Parser.parse_and_execute(connection_id, input)
+      connection = @connections.find { |c| c.id == connection_id }
+      Parser.parse_and_execute(connection, input)
+    end
+
+    def write_to_connection(connection_id, str)
+      send_message_to_edge_router(:write, connection_id: connection_id, output: str)
     end
 
     def send_server_started_to_edge_router
@@ -79,14 +84,6 @@ module CarbonMU
 
     def send_reboot_message_to_edge_router
       send_message_to_edge_router(:reboot)
-    end
-
-    def write_to_all_connections(str)
-      connections.each {|c| write_to_connection(c, str) }
-    end
-
-    def write_to_connection(connection_id, str)
-      send_message_to_edge_router(:write, connection_id: connection_id, output: str)
     end
 
     def send_message_to_edge_router(op, params={})
