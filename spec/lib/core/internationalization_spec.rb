@@ -1,11 +1,15 @@
 require "spec_helper"
 
 describe Internationalization do
+
   context ".setup" do
+    include FakeFS::SpecHelpers
+
     it "loads the right loadpath" do
-      # TODO fixy
+      FileUtils.mkdir_p("config/locales")
+      FileUtils.touch("config/locales/boo.yml")
       CarbonMU::Internationalization.setup
-      expect(I18n.load_path).to eq(["config/locales/en.yml", "config/locales/nl.yml"])
+      expect(I18n.load_path).to eq(["/config/locales/boo.yml"])
     end
   end
 

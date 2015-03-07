@@ -23,6 +23,7 @@ require_relative '../lib/carbonmu.rb'
 require 'pry'
 require 'mongoid-rspec'
 require 'database_cleaner'
+require 'fakefs/spec_helpers'
 
 Dir[File.dirname(__FILE__) + "/support/**/*.rb"].each {|f| require f}
 

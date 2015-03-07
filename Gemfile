@@ -23,4 +23,5 @@ group :development, :test do
   gem "timecop"
   gem "database_cleaner", "~> 1.3.0"
   gem "i18n-tasks", "~> 0.7.12"
+  gem "fakefs"
 end

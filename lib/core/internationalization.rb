@@ -6,7 +6,7 @@ module CarbonMU
 
     def self.setup
       I18n.enforce_available_locales = false
-      I18n.load_path = ["config/locales/en.yml", "config/locales/nl.yml"] # TODO look for all locales, TODO support for plugins too.
+      I18n.load_path = Dir["config/locales/**/*.yml"] # TODO support for plugins too.
     end
 
     def self.translate(str, *opts)
