@@ -5,6 +5,7 @@ describe Connection do
   let(:connection) { Connection.new(id) }
   let(:message) { "Watson, come here" }
   let(:expected_sent_message) { "Watson, come here\n"}
+  let(:player) { double(Player) }
 
   context ".id" do
     it "has an ID" do
@@ -34,6 +35,12 @@ describe Connection do
       server = stub_carbonmu_server
       expect(server).to receive(:write_to_connection).with(id, expected_sent_message)
       connection.write_translated(message)
+    end
+  end
+
+  context ".player" do
+    it "is nil for new connections" do
+      expect(connection.player).to eq(nil)
     end
   end
 end

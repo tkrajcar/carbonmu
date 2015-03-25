@@ -23,4 +23,13 @@ describe Server do
       expect(p.description).to eq("Obviously the most powerful of his race, it could kill us all.")
     end
   end
+
+  context "connections" do
+    it "temporarily should set new connections to be the super-admin" do #TODO
+      s = Server.new(true)
+      s.add_connection(1)
+      c = s.connections.first
+      expect(c.player).to eq(Player.superadmin)
+    end
+  end
 end

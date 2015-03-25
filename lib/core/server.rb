@@ -12,21 +12,24 @@ module CarbonMU
 
     attr_reader :connections
 
-    def initialize
+    def initialize(standalone = false)
       Internationalization.setup
 
       info "*** Starting CarbonMU game server to connect to edge router port #{CarbonMU.edge_router_receive_port}."
       CarbonMU.server = Actor.current
 
-      @ipc_reader = ReadSocket.new
-      @ipc_writer = WriteSocket.new(CarbonMU.edge_router_receive_port)
-      send_server_started_to_edge_router
-
       Server.initialize_database
       Server.create_starter_objects
 
-      async.run
-      retrieve_existing_connections
+      unless standalone
+        @ipc_reader = ReadSocket.new
+        @ipc_writer = WriteSocket.new(CarbonMU.edge_router_receive_port)
+        send_server_started_to_edge_router
+
+        async.run
+
+        retrieve_existing_connections
+      end
     end
 
     def run
@@ -41,7 +44,9 @@ module CarbonMU
 
     def add_connection(connection_id)
       @connections ||= []
-      @connections << Connection.new(connection_id)
+      c = Connection.new(connection_id)
+      c.player = Player.superadmin #TODO real login
+      @connections << c
     end
 
     def remove_connection(connection_id)
