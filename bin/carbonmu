@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH.unshift("../lib")
+require 'carbonmu'
+
+CarbonMU::CLI.new(ARGV).execute

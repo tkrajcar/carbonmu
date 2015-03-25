@@ -1,5 +1,0 @@
-#!/usr/bin/env ruby
-
-require './lib/carbonmu.rb'
-
-CarbonMU.start

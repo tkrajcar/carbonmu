@@ -46,7 +46,7 @@ EOF
 
   s.files         = `git ls-files`.split
   s.test_files    = Dir['spec/**/*']
-  #s.executables   = Dir['bin/*'].map { |f| File.basename(f) }
+  s.executables   = Dir['bin/*'].map { |f| File.basename(f) }
   s.require_paths = ["lib"]
 
   ## Make sure you can build the s.add_dependency on older versions of RubyGems too:

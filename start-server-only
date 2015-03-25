@@ -1,8 +1,0 @@
-#!/usr/bin/env ruby
-
-#TODO - Replace this when the real CLI comes around.
-
-require './lib/carbonmu.rb'
-
-CarbonMU.edge_router_receive_port = ARGV[0]
-CarbonMU.start_server

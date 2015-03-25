@@ -25,7 +25,7 @@ module CarbonMU
     end
 
     def start_server
-      spawn("/usr/bin/env ruby start-server-only #{@ipc_reader.port_number}")
+      spawn("bundle exec carbonmu start_server_only #{@ipc_reader.port_number}")
     end
 
     def handle_server_started(pid, port)
