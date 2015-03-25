@@ -3,7 +3,7 @@ module CarbonMU
     include Mongoid::Document
 
     field :name, type: String
-    field :description, type: String
+    field :description, type: String, default: "You see nothing special."
     field :_special, type: Symbol
 
     index(_special: 1)
