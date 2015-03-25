@@ -11,6 +11,7 @@ Gem::Specification.new do |s|
   s.email    = "allegro@conmolto.org"
   s.homepage = "http://github.com/tkrajcar/carbonmu"
   s.authors  = ['Tim Krajcar']
+  s.licenses = ['MIT']
 
   s.description = <<-EOF
 CarbonMU is a general-purpose, extendable MUD/MUSH server written in Ruby. CarbonMU is still
@@ -18,7 +19,7 @@ under active development and not yet ready for general use.
 EOF
 
   s.add_dependency "celluloid-io", "~> 0.16.1"
-  s.add_dependency "require_all"
+  s.add_dependency "require_all", "~> 1.3.2"
   s.add_dependency "multi_json", "~> 1.9.2"
   s.add_dependency "celluloid-zmq", "~> 0.16.0"
   s.add_dependency "colorize", "~> 0.7.3"
@@ -36,8 +37,6 @@ EOF
   s.add_development_dependency "database_cleaner", "~> 1.3.0"
   s.add_development_dependency "i18n-tasks", "~> 0.7.12"
   s.add_development_dependency "fakefs"
-  s.add_development_dependency "rubygems-tasks"
-
 
   dependencies = [
     # Examples:

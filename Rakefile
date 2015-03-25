@@ -1,9 +1,4 @@
 require 'rspec/core/rake_task'
-require 'rubygems/tasks'
-
-Gem::Tasks.new do |tasks|
-  tasks.console.command = 'pry'
-end
 
 RSpec::Core::RakeTask.new(:spec)
 
