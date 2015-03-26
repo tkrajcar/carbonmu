@@ -12,4 +12,10 @@ module Helpers
   def parse_to(klass, params={})
     [klass, params]
   end
+
+  def run_command(klass, params = {})
+    c = Connection.new(1)
+    cc = CommandContext.new({enacting_connection: c, params: params})
+    klass.new(cc).execute
+  end
 end

@@ -3,7 +3,8 @@ module CarbonMU
     syntax "reboot"
 
     def execute
-      Reboot.reboot
+      Notify.all("SERVER: ".white.on_red + "Rebooting, please wait...")
+      Server.trigger_reboot
     end
   end
 end
