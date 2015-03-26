@@ -28,6 +28,8 @@ namespace :gem do
 
   desc "Release new gem."
   task :release => :build do
-    system "gem push carbonmu-#{CarbonMU::VERSION}"
+    system "gem push carbonmu-#{CarbonMU::VERSION}.gem"
+    system "git tag #{CarbonMU::VERSION}"
+    puts "Don't forget to `git push --tags`."
   end
 end
