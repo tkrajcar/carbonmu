@@ -44,7 +44,6 @@ GEM
       thread
       thread_safe
     erubis (2.7.0)
-    fakefs (0.6.7)
     ffi (1.9.6)
     ffi-rzmq (2.0.4)
       ffi-rzmq-core (>= 1.0.1)
@@ -150,7 +149,6 @@ DEPENDENCIES
   awesome_print
   carbonmu!
   database_cleaner (~> 1.3.0)
-  fakefs
   guard (~> 2.12.4)
   guard-rspec (~> 4.5.0)
   i18n-tasks (~> 0.7.12)

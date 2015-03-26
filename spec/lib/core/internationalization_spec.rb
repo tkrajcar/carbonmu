@@ -3,13 +3,11 @@ require "spec_helper"
 describe Internationalization do
 
   context ".setup" do
-    include FakeFS::SpecHelpers
-
-    it "loads the right loadpath" do
-      FileUtils.mkdir_p("config/locales")
-      FileUtils.touch("config/locales/boo.yml")
+    it "loads the core locale files" do
       CarbonMU::Internationalization.setup
-      expect(I18n.load_path).to eq(["/config/locales/boo.yml"])
+      core_locales_dir = File.expand_path("../../../../config/locales", __FILE__)
+
+      expect(I18n.load_path).to include("#{core_locales_dir}/en.yml")
     end
   end
 
