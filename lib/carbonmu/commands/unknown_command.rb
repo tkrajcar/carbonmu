@@ -1,3 +1,5 @@
+require "carbonmu/interactions/notify"
+
 module CarbonMU
   class UnknownCommand < Command
     def execute

@@ -1,3 +1,5 @@
+require "carbonmu/game_objects/movable"
+
 module CarbonMU
   class Exit < GameObject
     include Mongoid::Document

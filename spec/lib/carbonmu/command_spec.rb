@@ -10,16 +10,6 @@ describe Command do
     expect(TestCommand.syntaxes).to eq(["bar", /foo/])
   end
 
-  it "sends syntaxes to parser" do
-    expect(Parser).to receive(:register_syntax).with("baz", duck_type(:syntax))
-    expect(Parser).to receive(:register_syntax).with("bat", duck_type(:syntax))
-
-    class ParseTestCommand < Command
-      syntax "baz"
-      syntax "bat"
-    end
-  end
-
   context "command contexts" do
     before(:each) do
       @context = double("Context").as_null_object

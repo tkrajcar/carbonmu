@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 $:.push('lib')
-require "version"
+require "carbonmu/version"
 
 Gem::Specification.new do |s|
   s.name     = "carbonmu"
@@ -19,7 +19,6 @@ under active development and not yet ready for general use.
 EOF
 
   s.add_dependency "celluloid-io", "~> 0.16.1"
-  s.add_dependency "require_all", "~> 1.3.2"
   s.add_dependency "multi_json", "~> 1.9.2"
   s.add_dependency "celluloid-zmq", "~> 0.16.0"
   s.add_dependency "colorize", "~> 0.7.3"

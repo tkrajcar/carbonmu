@@ -1,3 +1,6 @@
+require "carbonmu/ipc/carbon_ipc_socket"
+require "celluloid/zmq"
+
 module CarbonMU
   class WriteSocket < CarbonIPCSocket
     def initialize(port = '15000')

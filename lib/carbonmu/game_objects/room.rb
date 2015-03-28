@@ -1,3 +1,5 @@
+require "carbonmu/game_objects/container"
+
 module CarbonMU
   class Room < GameObject
     include Mongoid::Document

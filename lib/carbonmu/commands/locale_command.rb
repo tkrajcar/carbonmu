@@ -1,3 +1,5 @@
+require "carbonmu/interactions/notify"
+
 # TODO TEMP
 module CarbonMU
   class LocaleCommand < Command

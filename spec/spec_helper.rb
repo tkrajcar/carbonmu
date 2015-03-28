@@ -17,16 +17,22 @@
 
 ENV['MONGOID_ENV'] = "testing"
 
-require 'bundler'
+require 'bundler/setup'
+Bundler.setup
+
+$LOAD_PATH.unshift(File.dirname(__FILE__))
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), "..", "lib"))
+require 'carbonmu'
+include CarbonMU
+
+require 'mongoid'
 require 'timecop'
-require_relative '../lib/carbonmu.rb'
 require 'pry'
 require 'mongoid-rspec'
 require 'database_cleaner'
 
 Dir[File.dirname(__FILE__) + "/support/**/*.rb"].each {|f| require f}
 
-include CarbonMU
 CarbonMU.configure do |c|
   c.logger = Logger.new(nil)
 end

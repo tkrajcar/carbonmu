@@ -1,6 +1,15 @@
 require 'celluloid/io'
 require 'celluloid/zmq'
-require 'mongoid'
+require "mongoid"
+require "colorize"
+require "core_ext/string"
+require "carbonmu/internationalization"
+require "carbonmu/game_object"
+require "carbonmu/parser"
+require "carbonmu/ipc/ipc_message"
+require "carbonmu/connection"
+
+Dir[__dir__ + '/game_objects/*.rb'].each {|file| require file }
 
 module CarbonMU
   class Server
@@ -10,13 +19,15 @@ module CarbonMU
 
     finalizer :shutdown
 
-    attr_reader :connections
+    attr_reader :connections, :parser
 
     def initialize(standalone = false)
       Internationalization.setup
 
       info "*** Starting CarbonMU game server to connect to edge router port #{CarbonMU.edge_router_receive_port}."
       CarbonMU.server = Actor.current
+
+      @parser = Parser.new
 
       Server.initialize_database
       Server.create_starter_objects
@@ -55,7 +66,7 @@ module CarbonMU
 
     def handle_command(input, connection_id)
       connection = @connections.find { |c| c.id == connection_id }
-      Parser.parse_and_execute(connection, input)
+      @parser.parse_and_execute(connection, input)
     end
 
     def write_to_connection(connection_id, str)

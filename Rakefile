@@ -1,5 +1,4 @@
-$:.push('lib')
-require 'version'
+require 'carbonmu/version'
 require 'rspec/core/rake_task'
 
 RSpec::Core::RakeTask.new(:spec)

@@ -1,3 +1,6 @@
+require "carbonmu/ipc/carbon_ipc_socket"
+require "celluloid/zmq"
+
 module CarbonMU
   class ReadSocket < CarbonIPCSocket
     def initialize(port = '*')
@@ -13,6 +16,6 @@ module CarbonMU
       raw_endpoint = @zmq_socket.get(::ZMQ::LAST_ENDPOINT) || nil
       return nil if raw_endpoint.nil?
       raw_endpoint.match(/\:(\d+)/)[1].to_i
-    end    
+    end
   end
 end

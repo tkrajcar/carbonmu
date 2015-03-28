@@ -1,5 +1,6 @@
-require 'celluloid/autostart'
-require 'celluloid/io'
+require "celluloid/autostart"
+require "celluloid/io"
+require "carbonmu/edge_router/telnet_connection"
 
 module CarbonMU
   class TelnetReceptor

@@ -1,3 +1,6 @@
+require "carbonmu/game_objects/movable"
+require "carbonmu/game_objects/container"
+
 module CarbonMU
   class Player < GameObject
     include Mongoid::Document

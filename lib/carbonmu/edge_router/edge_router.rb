@@ -1,6 +1,9 @@
 require 'celluloid/autostart'
 require 'celluloid/io'
 require 'celluloid/zmq'
+require "carbonmu/edge_router/telnet_receptor"
+require "carbonmu/ipc/read_socket"
+require "carbonmu/ipc/write_socket"
 
 module CarbonMU
   class EdgeRouter

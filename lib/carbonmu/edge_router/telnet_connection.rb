@@ -1,4 +1,5 @@
 require 'forwardable'
+require "carbonmu/edge_router/edge_connection"
 
 module CarbonMU
   class TelnetConnection < EdgeConnection

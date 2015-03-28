@@ -1,14 +1,25 @@
+require "carbonmu/parser"
+
 module CarbonMU
   class Command
     class << self
+
       def syntax(value)
         @syntaxes ||= []
         @syntaxes << value
-        Parser.register_syntax(value, self)
       end
 
       def syntaxes
-        @syntaxes
+        @syntaxes || []
+      end
+
+      def inherited(child)
+        @command_classes ||= []
+        @command_classes << child
+      end
+
+      def command_classes
+        @command_classes || []
       end
     end
 

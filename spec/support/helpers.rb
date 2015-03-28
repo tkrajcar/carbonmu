@@ -6,7 +6,7 @@ module Helpers
   end
 
   def command_parse_results(raw_command)
-    Parser.parse(raw_command)
+    Parser.new.parse(raw_command)
   end
 
   def parse_to(klass, params={})
