@@ -9,7 +9,7 @@ require "carbonmu/parser"
 require "carbonmu/ipc/ipc_message"
 require "carbonmu/connection"
 
-Dir[__dir__ + '/game_objects/*.rb'].each {|file| require file }
+Dir[File.dirname(__FILE__) + '/game_objects/*.rb'].each {|file| require file }
 
 module CarbonMU
   class Server

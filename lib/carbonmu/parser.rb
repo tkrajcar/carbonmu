@@ -3,7 +3,7 @@ require "carbonmu/command_context"
 require "carbonmu/command"
 require "core_ext/match_data"
 
-Dir[__dir__ + '/commands/*.rb'].each {|file| require file }
+Dir[File.dirname(__FILE__) + '/commands/*.rb'].each {|file| require file }
 
 module CarbonMU
   class Parser
