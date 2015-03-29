@@ -6,7 +6,8 @@ describe RebootCommand do
   end
 
   it "notifies all of reboot and signals server" do
-    expect(Notify).to receive(:all).with(/Rebooting, please wait/)
+    server = stub_carbonmu_server
+    expect(server).to receive(:notify_all_players_raw).with(/Rebooting, please wait/)
     expect(Server).to receive(:trigger_reboot)
     run_command(RebootCommand)
   end

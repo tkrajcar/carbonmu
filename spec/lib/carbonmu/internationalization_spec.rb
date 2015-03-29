@@ -11,12 +11,12 @@ describe Internationalization do
     end
   end
 
-  context ".translate" do
+  context ".t" do
     it "calls I18n.t" do
       str = "foo"
       opts = {foo: "bar"}
-      expect(I18n).to receive(:t).with(str, [opts])
-      CarbonMU::Internationalization.translate(str, opts)
+      expect(I18n).to receive(:t).with(str, opts)
+      CarbonMU::Internationalization.t(str, opts)
     end
   end
 end

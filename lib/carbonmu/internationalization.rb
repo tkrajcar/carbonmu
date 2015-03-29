@@ -10,7 +10,7 @@ module CarbonMU
       I18n.load_path = Dir["#{core_locales_dir}/*.yml"] # TODO Check support for plugins too.
     end
 
-    def self.translate(str, *opts)
+    def self.t(str, opts = {})
       I18n.t(str, opts)
     end
   end

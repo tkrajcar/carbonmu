@@ -4,7 +4,7 @@ describe Connection do
   let(:id) { "foo" }
   let(:connection) { Connection.new(id) }
   let(:message) { "Watson, come here" }
-  let(:expected_sent_message) { "Watson, come here\n"}
+  let(:translation_args) { {foo: "bar"} }
   let(:player) { double(Player) }
 
   context ".id" do
@@ -17,24 +17,25 @@ describe Connection do
     end
   end
 
-  context ".locale" do
-    it "has a locale" do
-      expect(connection.locale).to eq("en")
-    end
-
-    it "lets you set the locale" do
-      c = Connection.new(id)
-      c.locale = "nl"
-      expect(c.locale).to eq("nl")
+  context ".write_translated" do
+    it "calls Server.write_to_connection" do
+      server = stub_carbonmu_server
+      expect(server).to receive(:write_to_connection).with(id, message, translation_args)
+      connection.write_translated(message, translation_args)
     end
   end
 
-  context ".write_translated" do
-    it "sends .write to CarbonMU.server" do
-      expect(I18n).to receive(:t) { message }
+  context ".write" do
+    it "should alias to .write_translated" do
+      expect(Connection.instance_method(:write)).to eq(Connection.instance_method(:write_translated))
+    end
+  end
+
+  context ".write_raw" do
+    it "calls Server.write_to_connection_raw" do
       server = stub_carbonmu_server
-      expect(server).to receive(:write_to_connection).with(id, expected_sent_message)
-      connection.write_translated(message)
+      expect(server).to receive(:write_to_connection_raw).with(id, message)
+      connection.write_raw(message)
     end
   end
 

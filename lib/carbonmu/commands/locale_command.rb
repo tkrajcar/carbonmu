@@ -1,5 +1,3 @@
-require "carbonmu/interactions/notify"
-
 # TODO TEMP
 module CarbonMU
   class LocaleCommand < Command
@@ -7,8 +5,8 @@ module CarbonMU
     syntax /^do (?<text>.*)/
 
     def execute
-      @context.enacting_connection.locale = @params[:locale]
-      Notify.one(@context.enacting_connection, "Locale changed to #{@params[:locale]}.")
+      @context.enactor.locale = @params[:locale]
+      @context.enactor.notify_raw "Locale changed to #{@params[:locale]}."
     end
   end
 end

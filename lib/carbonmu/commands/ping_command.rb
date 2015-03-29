@@ -1,11 +1,9 @@
-require "carbonmu/interactions/notify"
-
 module CarbonMU
   class PingCommand < Command
     syntax "ping"
 
     def execute
-      Notify.one(@context.enacting_connection, "PONG")
+      @context.enactor.notify_raw "PONG"
     end
   end
 end

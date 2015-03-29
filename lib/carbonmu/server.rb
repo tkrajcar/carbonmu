@@ -69,7 +69,7 @@ module CarbonMU
       @parser.parse_and_execute(connection, input)
     end
 
-    def write_to_connection(connection_id, str)
+    def send_write_to_edge_router(connection_id, str)
       send_message_to_edge_router(:write, connection_id: connection_id, output: str)
     end
 
@@ -108,6 +108,35 @@ module CarbonMU
       message = IPCMessage.new(op, params)
       debug "SERVER SEND: #{message}" if CarbonMU.configuration.log_ipc_traffic
       @ipc_writer.send message.serialize
+    end
+
+    def players
+      connections.collect(&:player).uniq
+    end
+
+    def write_to_connection_raw(connection, message)
+      send_write_to_edge_router(connection.id, message)
+    end
+
+    def notify_all_players(message, args = {})
+      players.each { |p| notify_player(p, message, args) }
+    end
+
+    def notify_all_players_raw(message)
+      players.each { |p| notify_player_raw(p, message) }
+    end
+
+    def notify_player(player, message, args = {})
+      notify_player_raw(player, player.translate_message(message, args))
+    end
+
+    def notify_player_raw(player, message)
+      debug "Notifying player #{player} with #{message}"
+      connections_for_player(player).each { |c| write_to_connection_raw(c, message)}
+    end
+
+    def connections_for_player(player)
+      connections.select { |c| c.player == player }
     end
 
     def self.initialize_database
