@@ -90,7 +90,7 @@ module CarbonMU
       when :started
         handle_server_started(message.pid, message.port)
       when :write
-        conn = @connections.select {|x| x.id == message.connection_id}.first # TODO look for efficiency here
+        conn = @connections.find {|x| x.id == message.connection_id} # TODO look for efficiency here
         conn.write(message.output + "\n")
       when :reboot
         reboot_server
