@@ -63,4 +63,9 @@ CarbonMU will have full i18n support on a per-player basis, allowing each player
 
 ## Supported Rubies
 
+## Setup
+
+Clone the repo, start Mongo, bundle and run `rake console` to open an interactive
+game console.
+
 CarbonMU is supported on Ruby 2.0.x or newer, JRuby (latest release), and Rubinius (latest release). Using JRuby or Rubinius will allow your game to be multi-threaded.

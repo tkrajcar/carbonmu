@@ -24,6 +24,7 @@ EOF
   s.add_dependency "colorize", "~> 0.7.3"
   s.add_dependency "mongoid", "~> 4.0.2"
   s.add_dependency "i18n", "~> 0.7.0"
+  s.add_dependency "bcrypt", "~> 3.1.10"
 
   s.add_development_dependency "awesome_print"
   s.add_development_dependency "pry"
