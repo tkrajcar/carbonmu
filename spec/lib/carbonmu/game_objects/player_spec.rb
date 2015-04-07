@@ -23,6 +23,8 @@ describe Player do
   end
 
   it { is_expected.to have_fields(:locale) }
+  it { is_expected.to have_fields(:password_hash) }
+  it { is_expected.to validate_uniqueness_of(:email) }
 
   context ".notify & .notify_raw" do
     before(:each) do
@@ -54,6 +56,19 @@ describe Player do
 
       expect(I18n).to receive(:t).with(@message, @merged_args) { @message_translate }
       @p.translate_message(@message, @args)
+    end
+  end
+
+  context "#authenticate" do
+    let(:password) { "Grue" }
+    let(:player) { Player.create name: "Zork", password: "Grue" }
+
+    it "returns true if the password matches" do
+      expect(player.authenticate(password)).to be true
+    end
+
+    it "returns false if the password matches" do
+      expect(player.authenticate(password + "4EVA")).to be false
     end
   end
 end
