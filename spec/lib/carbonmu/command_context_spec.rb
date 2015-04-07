@@ -7,8 +7,8 @@ describe CommandContext do
     allow(connection).to receive(:player) { player }
     command = "FOO"
     params = {boo: "bot"}
-    cc = CommandContext.new(enacting_connection: connection, raw_command: command, params: params)
-    expect(cc.enacting_connection).to eq(connection)
+    cc = CommandContext.new(connection: connection, raw_command: command, params: params)
+    expect(cc.connection).to eq(connection)
     expect(cc.enactor).to eq(player)
     expect(cc.raw_command).to eq(command)
     expect(cc.params).to eq(params)

@@ -17,6 +17,10 @@ module CarbonMU
       CarbonMU.server.write_to_connection_raw(id, msg)
     end
 
+    def quit
+      CarbonMU.server.close_connection(self.id)
+    end
+
     alias_method :write, :write_translated
   end
 end
