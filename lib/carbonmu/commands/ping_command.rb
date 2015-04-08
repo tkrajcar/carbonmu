@@ -3,7 +3,7 @@ module CarbonMU
     syntax "ping"
 
     def execute
-      @context.enactor.notify_raw "PONG"
+      @context.player.notify_raw "PONG"
     end
   end
 end
