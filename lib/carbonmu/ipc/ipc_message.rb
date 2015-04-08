@@ -3,7 +3,7 @@ require 'multi_json'
 module CarbonMU
   class IPCMessage
     def self.valid_ops
-      [:started, :command, :connect, :disconnect, :write, :reboot, :retrieve_existing_connections]
+      [:started, :command, :connect, :disconnect, :write, :reboot, :quit, :retrieve_existing_connections]
     end
 
     def self.required_parameters(op)
@@ -11,6 +11,7 @@ module CarbonMU
         write: [:connection_id, :output],
         connect: [:connection_id],
         disconnect: [:connection_id],
+        quit: [:connection_id],
         command: [:command, :connection_id],
       }[op]
     end

@@ -14,10 +14,10 @@ module CarbonMU
       Command.command_classes.each { |klass| register_command_class(klass) }
     end
 
-    def parse_and_execute(enacting_connection, input)
+    def parse_and_execute(connection, input)
       command_class, params = parse(input)
 
-      context = CommandContext.new(enacting_connection: enacting_connection, raw_command: input, params: params)
+      context = CommandContext.new(connection: connection, raw_command: input, params: params)
       command_class.new(context).execute
     end
 

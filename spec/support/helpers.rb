@@ -15,7 +15,7 @@ module Helpers
 
   def run_command(klass, params = {})
     c = Connection.new(1)
-    cc = CommandContext.new({enacting_connection: c, params: params})
+    cc = CommandContext.new({connection: c, params: params})
     klass.new(cc).execute
   end
 end

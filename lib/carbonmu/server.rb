@@ -73,6 +73,10 @@ module CarbonMU
       send_message_to_edge_router(:write, connection_id: connection_id, output: str)
     end
 
+    def send_quit_to_edge_router(connection_id)
+      send_message_to_edge_router(:quit, connection_id: connection_id)
+    end
+
     def send_server_started_to_edge_router
       send_message_to_edge_router(:started, port: @ipc_reader.port_number, pid: Process.pid)
     end
@@ -116,6 +120,10 @@ module CarbonMU
 
     def write_to_connection_raw(connection, message)
       send_write_to_edge_router(connection.id, message)
+    end
+
+    def close_connection(connection_id)
+      send_quit_to_edge_router(connection_id)
     end
 
     def notify_all_players(message, args = {})

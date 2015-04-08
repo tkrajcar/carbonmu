@@ -94,6 +94,9 @@ module CarbonMU
         conn.write(message.output + "\n")
       when :reboot
         reboot_server
+      when :quit
+        conn = @connections.find {|x| x.id == message.connection_id} # TODO look for efficiency here
+        conn.shutdown
       when :retrieve_existing_connections
         info 'Sending connections to server...'
         @connections.each do |conn|
