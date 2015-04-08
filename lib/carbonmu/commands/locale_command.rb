@@ -5,8 +5,8 @@ module CarbonMU
     syntax /^do (?<text>.*)/
 
     def execute
-      @context.player.locale = @params[:locale]
-      @context.player.notify_raw "Locale changed to #{@params[:locale]}."
+      @player.locale = @params[:locale]
+      @player.notify_raw "Locale changed to #{@params[:locale]}."
     end
   end
 end

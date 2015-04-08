@@ -12,5 +12,12 @@ describe CommandContext do
     expect(cc.player).to eq(player)
     expect(cc.raw_command).to eq(command)
     expect(cc.params).to eq(params)
+    expect(cc.attributes).to eq(CommandContext.attributes)
+  end
+
+  context ".attributes" do
+    it "has the correct attributes listed" do
+      expect(CommandContext.attributes).to eq [:connection, :player, :raw_command, :params]
+    end
   end
 end

@@ -4,7 +4,7 @@ module CarbonMU
     syntax "quit"
 
     def execute
-      @context.connection.quit
+      @connection.quit
     end
   end
 end

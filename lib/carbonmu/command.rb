@@ -27,7 +27,7 @@ module CarbonMU
 
     def initialize(context)
       @context = context
-      @params = context.params
+      context.attributes.each { |attribute| instance_variable_set("@#{attribute}", context.send(attribute)) }
     end
 
     def execute

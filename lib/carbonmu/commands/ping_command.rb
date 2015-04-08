@@ -3,7 +3,7 @@ module CarbonMU
     syntax "ping"
 
     def execute
-      @context.player.notify_raw "PONG"
+      @player.notify_raw "PONG"
     end
   end
 end
