@@ -63,7 +63,19 @@ CarbonMU will have full i18n support on a per-player basis, allowing each player
 
 ## Supported Rubies
 
-## Setup
+## Creating a game with CarbonMU
+
+Create a new game with `carbonmu create mygame`. This will create a directory with
+some files that give you a general skeleton for your game and install some
+prerequisites.
+
+You can play your newly created game by typing `carbonmu start` in that
+directory.
+
+## Contributing
+
+Look at the issues, find something to fix and fix it. Alternatively expand upon
+these instructions, they're suboptimal.
 
 Clone the repo, start Mongo, bundle and run `rake console` to open an interactive
 game console.

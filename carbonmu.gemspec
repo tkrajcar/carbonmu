@@ -36,6 +36,7 @@ EOF
   s.add_development_dependency "timecop"
   s.add_development_dependency "database_cleaner", "~> 1.3.0"
   s.add_development_dependency "i18n-tasks", "~> 0.7.12"
+  s.add_development_dependency "fakefs", "~> 0.6.7"
 
   s.files         = `git ls-files`.split
   s.test_files    = Dir['spec/**/*']
