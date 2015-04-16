@@ -5,6 +5,8 @@ describe Player do
   it_behaves_like "a Movable"
   it_behaves_like "a Container"
 
+  before(:each) { Server.create_starter_objects }
+
   it "gets a location of the starter room if not otherwise specified" do
     p = Player.create!(location: nil)
     expect(p.location).to eq(Room.starting)

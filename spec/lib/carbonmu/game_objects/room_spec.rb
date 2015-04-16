@@ -6,6 +6,8 @@ describe Room do
 
   it { is_expected.to have_many(:incoming_exits).of_type(Exit).with_foreign_key(:destination) }
 
+  before(:each) { Server.create_starter_objects }
+
   context ".starting" do
     it "returns the actual starting room" do
       expect(Room.starting._special).to eq(:starting_room)

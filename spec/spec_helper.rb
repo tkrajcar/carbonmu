@@ -54,7 +54,6 @@ RSpec.configure do |config|
 
   config.around(:each) do |example|
     DatabaseCleaner.cleaning do
-      Server.create_starter_objects
       example.run
     end
   end

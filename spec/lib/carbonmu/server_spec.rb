@@ -2,7 +2,10 @@ require 'spec_helper'
 
 describe Server do
   context "minimal objects" do
+    before(:each) { Server.create_starter_objects }
+
     it "should create the starter Room" do
+
       r = Room.where(_special: :starting_room).first
       expect(r.class).to eq(Room)
       expect(r.name).to eq("Starting Room")
