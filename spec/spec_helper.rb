@@ -33,6 +33,8 @@ require 'database_cleaner'
 
 Dir[File.dirname(__FILE__) + "/support/**/*.rb"].each {|f| require f}
 
+BCrypt::Engine.cost = 1
+
 CarbonMU.configure do |c|
   c.logger = Logger.new(nil)
 end
