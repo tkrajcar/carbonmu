@@ -13,6 +13,7 @@ describe LookCommand do
     context "#execute" do
       it "prints the name of the current room" do
         allow_any_instance_of(LookCommand).to receive(:notify_location_description)
+        allow_any_instance_of(LookCommand).to receive(:notify_contents)
         expect(server).to receive(:notify_player).with(
           player,
           "location.name",
@@ -23,12 +24,26 @@ describe LookCommand do
 
       it "prints the description of the current room" do
         allow_any_instance_of(LookCommand).to receive(:notify_location_name)
+        allow_any_instance_of(LookCommand).to receive(:notify_contents)
         expect(server).to receive(:notify_player).once.ordered.with(
             player,
             "location.description",
             { message: "You see nothing special." }
         )
         run_command_with_player(LookCommand, player)
+      end
+    
+      it "prints the contents of the room if there is contents" do
+        Thing.new(name: "1 angry dragon").location = room
+        allow_any_instance_of(LookCommand).to receive(:notify_location_name)
+        allow_any_instance_of(LookCommand).to receive(:notify_location_description)
+        expect(server).to receive(:notify_player).once.ordered.with(
+            player,
+            "location.contents",
+            { message: "1 angry dragon" }
+        )
+        run_command_with_player(LookCommand, player)
+
       end
     end
   end

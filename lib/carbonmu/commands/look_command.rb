@@ -5,7 +5,7 @@ module CarbonMU
     def execute
       notify_location_name
       notify_location_description
-      # contents if contents
+      notify_contents
       # exits if exits
     end
 
@@ -15,6 +15,10 @@ module CarbonMU
 
     def notify_location_description
       CarbonMU.server.notify_player(@player, "location.description", {message: @player.location.description})
+    end
+
+    def notify_contents
+      CarbonMU.server.notify_player(@player, "location.contents", {message: @player.location.contents.map(&:name).compact.join(',')})
     end
   end
 end
