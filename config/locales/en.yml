@@ -4,5 +4,7 @@ en:
     pose: '%{name} %{message}'
     semipose: '%{name}%{message}'
     emit: '<%{name}> %{message}'
-    location_name: 'You are in %{message}'
-    location_description: '%{message}'
+
+  location:
+    name: '%{message}'
+    description: '%{message}'

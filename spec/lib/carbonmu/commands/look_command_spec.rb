@@ -15,7 +15,7 @@ describe LookCommand do
         allow_any_instance_of(LookCommand).to receive(:notify_location_description)
         expect(server).to receive(:notify_player).with(
           player,
-          "emits.location_name",
+          "location.name",
           { message: "Starting Room" }
         )
         run_command_with_player(LookCommand, player)
@@ -25,7 +25,7 @@ describe LookCommand do
         allow_any_instance_of(LookCommand).to receive(:notify_location_name)
         expect(server).to receive(:notify_player).once.ordered.with(
             player,
-            "emits.location_description",
+            "location.description",
             { message: "You see nothing special." }
         )
         run_command_with_player(LookCommand, player)
