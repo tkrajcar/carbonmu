@@ -18,4 +18,12 @@ module Helpers
     cc = CommandContext.new({connection: c, params: params})
     klass.new(cc).execute
   end
+
+  def run_command_with_player(klass, player, params={})
+    c = Connection.new(1)
+    c.player = player
+    cc = CommandContext.new({connection: c, params: params})
+    klass.new(cc).execute
+  end
 end
+

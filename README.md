@@ -77,6 +77,8 @@ directory.
 Look at the issues, find something to fix and fix it. Alternatively expand upon
 these instructions, they're suboptimal.
 
+You will need ZeroMQ and Mongo.
+
 Clone the repo, start Mongo, bundle and run `rake console` to open an interactive
 game console.
 
