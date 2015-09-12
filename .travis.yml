@@ -1,4 +1,6 @@
 language: ruby
+cache: bundler
+sudo: false
 rvm:
   - 2.0.0
   - 2.1.6
@@ -11,5 +13,6 @@ services:
 addons:
   code_climate:
     repo_token: e3e4fc5da17ef3e332a5f62ce5a12d727ad472f367e41278df9d951b912cc748
-before_install:
- - sudo apt-get install -qq libzmq3-dev
+  apt:
+    packages:
+      - libzmq3-dev
