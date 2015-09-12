@@ -19,8 +19,8 @@ under active development and not yet ready for general use.
 EOF
 
   s.add_dependency "celluloid-io", "~> 0.16.1"
+#  s.add_dependency "dcell", "~> 0.16.1"
   s.add_dependency "multi_json", "~> 1.9.2"
-  s.add_dependency "celluloid-zmq", "~> 0.16.0"
   s.add_dependency "colorize", "~> 0.7.3"
   s.add_dependency "mongoid", "~> 4.0.2"
   s.add_dependency "i18n", "~> 0.7.0"
@@ -30,10 +30,9 @@ EOF
   s.add_development_dependency "pry"
   s.add_development_dependency "rake"
   s.add_development_dependency "guard", "~> 2.12.4"
-  s.add_development_dependency "guard-rspec", "~> 4.5.0"
-  s.add_development_dependency "mongoid-rspec"
-  s.add_development_dependency "rspec", "~> 3.2.0"
-  s.add_development_dependency "timecop"
+  s.add_development_dependency "minitest", "~> 5.8.0"
+  s.add_development_dependency "guard-minitest", "~> 2.4.4"
+
   s.add_development_dependency "database_cleaner", "~> 1.3.0"
   s.add_development_dependency "i18n-tasks", "~> 0.7.12"
   s.add_development_dependency "fakefs", "~> 0.6.7"

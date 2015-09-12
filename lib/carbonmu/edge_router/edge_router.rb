@@ -1,15 +1,9 @@
-require 'celluloid/autostart'
-require 'celluloid/io'
-require 'celluloid/zmq'
 require "carbonmu/edge_router/telnet_receptor"
-require "carbonmu/ipc/read_socket"
-require "carbonmu/ipc/write_socket"
 
 module CarbonMU
   class EdgeRouter
-    include Celluloid::IO
+    include Celluloid
     include Celluloid::Logger
-    include Celluloid::ZMQ
 
     finalizer :shutdown
 
@@ -17,25 +11,14 @@ module CarbonMU
 
     def initialize(host, port)
       info "*** Starting CarbonMU edge router."
+
       @receptors = TelnetReceptor.new(host,port)
       @connections = []
-
-      @ipc_reader = ReadSocket.new
-      info "*** Edge router waiting for IPC on port #{@ipc_reader.port_number}"
-      async.run
-
-      start_server
     end
 
     def start_server
-      spawn("bundle exec carbonmu start_server_only #{@ipc_reader.port_number}")
-    end
-
-    def handle_server_started(pid, port)
-      debug "*** Edge router received server IPC start. Pid #{pid}, port #{port}." if CarbonMU.configuration.log_ipc_traffic
-      @current_server_pid = pid
-      Process.detach(pid)
-      @ipc_writer = WriteSocket.new(port)
+      server_pid = spawn("bundle exec carbonmu start_server_only 1")
+      Process.detach(server_pid)
     end
 
     def add_connection(connection)
@@ -50,14 +33,9 @@ module CarbonMU
 
     def shutdown
       # TODO Tell all receptors and connections to quit.
-      Process.kill("TERM", @current_server_pid)
+      #Process.kill("TERM", @current_server_pid) if @current_server_pid
     end
 
-    def run
-      loop do
-        async.handle_server_message(@ipc_reader.read)
-      end
-    end
 
     def send_connect_to_server(connection)
       send_message_to_server(:connect, connection_id: connection.id)

@@ -1,7 +1,13 @@
 require "carbonmu/configuration"
 require "carbonmu/version"
-require "carbonmu/edge_router/edge_router_supervision_group"
-require "carbonmu/server_supervision_group"
+require "carbonmu/edge_router/edge_router"
+require 'dcell'
+require 'dcell/registries/redis_adapter'
+
+registry = DCell::Registry::RedisAdapter.new :server => 'localhost'
+
+DCell.start :id => "boo", :addr => "tcp://127.0.0.1:9001", :registry => registry
+
 
 module CarbonMU
   class << self
@@ -16,7 +22,8 @@ module CarbonMU
   end
 
   def self.start
-    EdgeRouterSupervisionGroup.run
+    EdgeRouter.supervise_as :edge_router, "0.0.0.0", 8421
+    sleep
   end
 
   def self.start_in_background
