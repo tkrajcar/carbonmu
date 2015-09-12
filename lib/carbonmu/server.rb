@@ -6,7 +6,6 @@ require "core_ext/string"
 require "carbonmu/internationalization"
 require "carbonmu/game_object"
 require "carbonmu/parser"
-require "carbonmu/ipc/ipc_message"
 require "carbonmu/connection"
 
 Dir[File.dirname(__FILE__) + '/game_objects/*.rb'].each {|file| require file }
@@ -24,7 +23,7 @@ module CarbonMU
     def initialize(standalone = false)
       Internationalization.setup
 
-      info "*** Starting CarbonMU game server to connect to edge router port #{CarbonMU.edge_router_receive_port}."
+      info "*** Starting CarbonMU game server."
       CarbonMU.server = Actor.current
 
       @parser = Parser.new
@@ -33,20 +32,12 @@ module CarbonMU
       Server.create_starter_objects
 
       unless standalone
-        @ipc_reader = ReadSocket.new
-        @ipc_writer = WriteSocket.new(CarbonMU.edge_router_receive_port)
-        send_server_started_to_edge_router
-
-        async.run
-
-        retrieve_existing_connections
+        #retrieve_existing_connections
       end
     end
 
-    def run
-      loop do
-        async.handle_edge_router_message(@ipc_reader.read)
-      end
+    def edge_router
+      Actor[:edge_router].async
     end
 
     def shutdown
@@ -69,33 +60,6 @@ module CarbonMU
       @parser.parse_and_execute(connection, input)
     end
 
-    def send_write_to_edge_router(connection_id, str)
-      send_message_to_edge_router(:write, connection_id: connection_id, output: str)
-    end
-
-    def send_quit_to_edge_router(connection_id)
-      send_message_to_edge_router(:quit, connection_id: connection_id)
-    end
-
-    def send_server_started_to_edge_router
-      send_message_to_edge_router(:started, port: @ipc_reader.port_number, pid: Process.pid)
-    end
-
-    def handle_edge_router_message(input)
-      message = IPCMessage.unserialize(input)
-      debug "SERVER RECEIVE: #{message}" if CarbonMU.configuration.log_ipc_traffic
-      case message.op
-      when :command
-        handle_command(message.command, message.connection_id)
-      when :connect
-        add_connection(message.connection_id)
-      when :disconnect
-        remove_connection(message.connection_id)
-      else
-        raise ArgumentError, "Unsupported operation '#{message.op}' received from edge router."
-      end
-    end
-
     def retrieve_existing_connections
       send_message_to_edge_router(:retrieve_existing_connections)
     end
@@ -108,22 +72,16 @@ module CarbonMU
       send_message_to_edge_router(:reboot)
     end
 
-    def send_message_to_edge_router(op, params={})
-      message = IPCMessage.new(op, params)
-      debug "SERVER SEND: #{message}" if CarbonMU.configuration.log_ipc_traffic
-      @ipc_writer.send message.serialize
-    end
-
     def players
       connections.collect(&:player).uniq
     end
 
     def write_to_connection_raw(connection, message)
-      send_write_to_edge_router(connection.id, message)
+      edge_router.write(connection.id, message)
     end
 
     def close_connection(connection_id)
-      send_quit_to_edge_router(connection_id)
+      edge_router.remove_connection(connection_id)
     end
 
     def notify_all_players(message, args = {})

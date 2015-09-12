@@ -1,6 +1,7 @@
 require "carbonmu/configuration"
 require "carbonmu/version"
 require "carbonmu/edge_router/edge_router"
+require "carbonmu/server"
 require 'dcell'
 require 'dcell/registries/redis_adapter'
 
@@ -12,7 +13,6 @@ DCell.start :id => "boo", :addr => "tcp://127.0.0.1:9001", :registry => registry
 module CarbonMU
   class << self
     attr_accessor :configuration
-    attr_accessor :edge_router_receive_port
     attr_accessor :server
   end
   self.configuration = Configuration.new
@@ -23,6 +23,7 @@ module CarbonMU
 
   def self.start
     EdgeRouter.supervise_as :edge_router, "0.0.0.0", 8421
+    Server.supervise_as :server
     sleep
   end
 
