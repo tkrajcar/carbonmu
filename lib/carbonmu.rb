@@ -2,8 +2,6 @@ require "carbonmu/configuration"
 require "carbonmu/version"
 require "carbonmu/edge_router/edge_router"
 require "carbonmu/server"
-require 'dcell'
-require 'dcell/registries/redis_adapter'
 
 module CarbonMU
   class << self
@@ -23,6 +21,8 @@ module CarbonMU
   end
 
   def self.configure_dcell_node
+    require 'dcell'
+    require 'dcell/registries/redis_adapter'
     unless DCell.me
       registry = DCell::Registry::RedisAdapter.new(server: 'localhost')
       DCell.start(id: Socket.gethostname)

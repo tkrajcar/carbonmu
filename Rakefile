@@ -1,22 +1,20 @@
 require 'carbonmu/version'
-require 'rspec/core/rake_task'
+require 'rake/testtask'
 
-RSpec::Core::RakeTask.new(:spec)
-
-task :default => :spec
-
-desc "Run I18n specs (check for missing & unused keys)."
-RSpec::Core::RakeTask.new('spec:i18n') do |task|
-  task.rspec_opts = "--tag i18n"
+Rake::TestTask.new do |t|
+  t.pattern = "test/**/*_test.rb"
+  t.verbose = true
 end
+
+task :default => :test
 
 desc "Launch console"
 task :console do
   require 'carbonmu'
   require 'awesome_print'
   require 'pry'
-  CarbonMU::Server.initialize_database
-  CarbonMU::Server.create_starter_objects
+#  CarbonMU::Server.initialize_database
+#  CarbonMU::Server.create_starter_objects
   Pry.start CarbonMU
 end
 
