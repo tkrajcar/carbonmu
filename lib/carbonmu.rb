@@ -5,11 +5,6 @@ require "carbonmu/server"
 require 'dcell'
 require 'dcell/registries/redis_adapter'
 
-registry = DCell::Registry::RedisAdapter.new :server => 'localhost'
-
-DCell.start :id => "boo", :addr => "tcp://127.0.0.1:9001", :registry => registry
-
-
 module CarbonMU
   class << self
     attr_accessor :configuration
@@ -22,21 +17,26 @@ module CarbonMU
   end
 
   def self.start
-    EdgeRouter.supervise_as :edge_router, "0.0.0.0", 8421
-    Server.supervise_as :server
+    start_edge_router
+    start_server
     sleep
   end
 
-  def self.start_in_background
-    EdgeRouterSupervisionGroup.run!
+  def self.configure_dcell_node
+    unless DCell.me
+      registry = DCell::Registry::RedisAdapter.new(server: 'localhost')
+      DCell.start(id: Socket.gethostname)
+    end
+  end
+
+  def self.start_edge_router
+    configure_dcell_node
+    EdgeRouter.supervise_as :edge_router, "0.0.0.0", 8421
   end
 
   def self.start_server
-    ServerSupervisionGroup.run
-  end
-
-  def self.start_server_in_background
-    ServerSupervisionGroup.run!
+    configure_dcell_node
+    Server.supervise_as :server
   end
 end
 

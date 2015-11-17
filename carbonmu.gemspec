@@ -17,7 +17,8 @@ Gem::Specification.new do |s|
 CarbonMU is a general-purpose, extendable MUD/MUSH server written in Ruby. CarbonMU is still
 under active development and not yet ready for general use.
 EOF
-  s.add_dependency "celluloid-io", "~> 0.16.2"
+  s.add_dependency "dcell", "~> 0.16.1"
+
   s.add_dependency "multi_json", "~> 1.9.2"
   s.add_dependency "colorize", "~> 0.7.3"
   s.add_dependency "mongoid", "~> 4.0.2"

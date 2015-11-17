@@ -22,8 +22,7 @@ module CarbonMU
       CarbonMU.start
     end
 
-    def start_server_only(port)
-      CarbonMU.edge_router_receive_port = port
+    def start_server_only
       CarbonMU.start_server
     end
 
