@@ -1,4 +1,4 @@
-[![Join the chat at https://gitter.im/tkrajcar/carbonmu](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/tkrajcar/carbonmu?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join #carbonmu on Freenode](https://www.irccloud.com/invite-svg?channel=%23carbonmu&amp;hostname=irc.freenode.net&amp;port=6697&amp;ssl=1)](http://irc.lc/freenode/carbonmu)
 [![Stories in Ready](https://badge.waffle.io/tkrajcar/carbonmu.png?label=ready&title=Ready)](https://waffle.io/tkrajcar/carbonmu)
 [![Build Status](https://travis-ci.org/tkrajcar/carbonmu.png?branch=master)](https://travis-ci.org/tkrajcar/carbonmu)
 [![Code Climate](https://codeclimate.com/github/tkrajcar/carbonmu.png)](https://codeclimate.com/github/tkrajcar/carbonmu)
@@ -10,8 +10,8 @@ The remainder of this documentation is currently intended more as design documen
 
 ## Where to talk about CarbonMU
 
+* [#carbonmu on Freenode IRC](http://irc.lc/freenode/carbonmu).
 * In the near future there will be an official CarbonMU support site running... CarbonMU. In the meantime, you can find me on M\*U\*S\*H (mush.pennmush.org 4201) as Rince.
-* Use [Gitter](https://gitter.im/tkrajcar/carbonmu), a nifty chat system that integrates with Github.
 
 ## The road to 1.0
 
