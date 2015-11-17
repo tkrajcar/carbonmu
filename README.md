@@ -19,7 +19,7 @@ See [this wiki page](https://github.com/tkrajcar/carbonmu/wiki/The-road-to-1.0) 
 
 ## Architecture
 
-CarbonMU is powered by [Celluloid](https://celluloid.io/), an actor-based concurrency/multithreading framework, plus [ZeroMQ](http://zeromq.org/) for inter-process communication, and uses MongoDB (via [Mongoid](http://mongoid.org/)) to store all of its data. The framework is designed to support a variety of connections, including basic TCP telnet, SSL telnet, and JSON over HTTP, API-style.
+CarbonMU is powered by [DCell](https://github.com/celluloid/dcell), a framework for distributed applications, which is built on top of [Celluloid](https://celluloid.io/) and [ZeroMQ](http://zeromq.org/). CarbonMU uses MongoDB (via [Mongoid](http://mongoid.org/)) to store all of its data. The framework is designed to support a variety of connections by players, including basic TCP telnet, SSL telnet, and JSON over HTTP, API-style.
 
 It's also intended to use a highly plugin-based model. A typical CarbonMU game will probably consist of the carbonmu core gem (what you see here), some number of community-supported third-party gems to provide things like a bboard system and other common utilities, and some game-specific custom code. It will not include a scripting engine or "softcode"-type functionality.
 
@@ -63,6 +63,8 @@ CarbonMU will have full i18n support on a per-player basis, allowing each player
 
 ## Supported Rubies
 
+CarbonMU is tested and supported on Ruby 2.0 or newer, JRuby (latest release), and Rubinius (latest release). Using JRuby or Rubinius will allow your game to be multi-threaded.
+
 ## Creating a game with CarbonMU
 
 Create a new game with `carbonmu create mygame`. This will create a directory with
@@ -77,11 +79,9 @@ directory.
 Look at the issues, find something to fix and fix it. Alternatively expand upon
 these instructions, they're suboptimal.
 
-You will need ZeroMQ and Mongo.
+You will need ZeroMQ 3.x (4.1.x does not currently work, due to underlying issues in CarbonMU's dependencies), and MongoDB.
 
 Clone the repo, start Mongo, bundle and run `rake console` to open an interactive
 game console.
 
 You can start a server with `carbonmu start`.
-
-CarbonMU is supported on Ruby 2.0.x or newer, JRuby (latest release), and Rubinius (latest release). Using JRuby or Rubinius will allow your game to be multi-threaded.

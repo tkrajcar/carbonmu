@@ -6,7 +6,7 @@ rvm:
   - 2.1
   - 2.2
   - rbx-2
-  - jruby-19mode
+  - jruby-9.0.1.0
 services:
   - mongodb
   - redis
