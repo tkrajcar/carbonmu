@@ -16,3 +16,10 @@ addons:
   apt:
     packages:
       - libzmq3-dev
+notifications:
+  irc:
+    channels: "chat.freenode.net#carbonmu"
+    on_success: always
+    on_failure: always
+    use_notice: true
+    skip_join: true
