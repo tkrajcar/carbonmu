@@ -29,7 +29,7 @@ EOF
   s.add_development_dependency "pry"
   s.add_development_dependency "rake"
   s.add_development_dependency "guard", "~> 2.12.4"
-  s.add_development_dependency "minitest", "~> 5.8.0"
+  s.add_development_dependency "minitest", "~> 5.8.3"
   s.add_development_dependency "minitest-reporters"
   s.add_development_dependency "mocha", "~> 1.1.0"
 
