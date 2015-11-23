@@ -1,26 +1,21 @@
-require_relative "../test_helper.rb"
+require_relative "../../test_helper.rb"
 
 class InteractiveConnectionTest < Minitest::Test
   include Helpers
 
   def setup
-    Celluloid.boot
-    @id = "foo"
-    @connection = InteractiveConnection.new(@id)
-    @message = "Watson, come here"
-    @translation_args = { foo: "bar" }
-    @player = mock("Player")
+    @connection = InteractiveConnection.new
   end
 
   def test_has_id
-    assert_equal @connection.id, @id
+    refute_nil @connection.id
   end
 
   def test_id_cant_be_modified
-    assert_raises(NameError) { connection.id = @id }
+    assert_raises(NameError) { @connection.id = @id }
   end
 
-  def test_player_is_nil_for_new_connections
-    assert_nil @connection.player
+  def test_doesnt_run
+    assert_raises(NotImplementedError) { @connection.run }
   end
 end
