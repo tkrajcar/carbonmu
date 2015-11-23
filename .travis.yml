@@ -11,8 +11,6 @@ services:
   - mongodb
   - redis
 addons:
-  code_climate:
-    repo_token: e3e4fc5da17ef3e332a5f62ce5a12d727ad472f367e41278df9d951b912cc748
   apt:
     packages:
       - libzmq3-dev

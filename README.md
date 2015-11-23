@@ -1,7 +1,6 @@
 [![Join #carbonmu on Freenode](https://www.irccloud.com/invite-svg?channel=%23carbonmu&amp;hostname=irc.freenode.net&amp;port=6697&amp;ssl=1)](http://irc.lc/freenode/carbonmu)
 [![Stories in Ready](https://badge.waffle.io/tkrajcar/carbonmu.png?label=ready&title=Ready)](https://waffle.io/tkrajcar/carbonmu)
 [![Build Status](https://travis-ci.org/tkrajcar/carbonmu.png?branch=master)](https://travis-ci.org/tkrajcar/carbonmu)
-[![Code Climate](https://codeclimate.com/github/tkrajcar/carbonmu.png)](https://codeclimate.com/github/tkrajcar/carbonmu)
 
 # CarbonMU
 CarbonMU is a general-purpose, extendable MUD/MUSH server framework written in Ruby. It's designed to scale to thousands of players, handle a wide variety of game types, from classic hack-n-slash MUDs to innovative text-based social communities. **CarbonMU is not ready for public use by non-developers, but we welcome user contributions to help move the project along**.
