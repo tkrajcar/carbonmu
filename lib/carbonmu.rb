@@ -6,7 +6,6 @@ require "carbonmu/server"
 module CarbonMU
   class << self
     attr_accessor :configuration
-    attr_accessor :server
   end
   self.configuration = Configuration.new
 
@@ -31,7 +30,7 @@ module CarbonMU
 
   def self.start_edge_router
     configure_dcell_node
-    EdgeRouter.supervise_as :edge_router, "0.0.0.0", 8421
+    EdgeRouter.supervise_as :edge_router
   end
 
   def self.start_server

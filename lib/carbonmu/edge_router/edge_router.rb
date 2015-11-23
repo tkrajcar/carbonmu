@@ -5,38 +5,20 @@ module CarbonMU
     include Celluloid
     include Celluloid::Logger
 
-    finalizer :shutdown
+    # finalizer :shutdown TODO
 
-    attr_reader :receptors, :connections
+    attr_reader :receptors
 
-    def initialize(host, port)
+    def initialize
       info "*** Starting CarbonMU edge router."
 
-      @receptors = TelnetReceptor.new(host,port)
-      @connections = []
-    end
-
-    def server
-      Actor[:server].async
-    end
-
-    def add_connection(connection)
-      @connections << connection
-      server.add_connection(connection.id)
-    end
-
-    def remove_connection(connection)
-      @connections.delete(connection)
-      server.remove_connection(connection.id)
+      @receptors = []
+      @receptors << TelnetReceptor.new("0.0.0.0", 8421)
     end
 
     def shutdown
-      # TODO Tell all receptors and connections to quit.
+      # TODO Tell all receptors to quit, and kill serevr.
       #Process.kill("TERM", @current_server_pid) if @current_server_pid
-    end
-
-    def send_command_to_server(input, connection_id)
-      server.handle_command(input, connection_id)
     end
 
     def reboot_server
@@ -44,22 +26,5 @@ module CarbonMU
       Process.kill("TERM", @current_server_pid)
       start_server
     end
-
-    def write(connection_id, message)
-      conn = @connections.find {|x| x.id == connection_id} # TODO look for efficiency here
-      conn.write(message + "\n")
-    end
-
-#    def handle_server_message(input)
-#      when :reboot
-#        reboot_server
-#      when :quit
-#        conn = @connections.find {|x| x.id == message.connection_id} # TODO look for efficiency here
-#        conn.shutdown
-#      when :retrieve_existing_connections
-#        info 'Sending connections to server...'
-#        @connections.each do |conn|
-#          send_connect_to_server(conn)
-#        end
   end
 end

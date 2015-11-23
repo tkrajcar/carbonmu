@@ -1,9 +1,9 @@
 module CarbonMU
-  class EdgeConnection
+  class InteractiveConnection
     include Celluloid::IO
     include Celluloid::Logger
 
-    attr_accessor :name
+    attr_accessor :player
     attr_reader :id
 
     finalizer :shutdown
@@ -17,18 +17,17 @@ module CarbonMU
       nil # to be implemented by subclasses, if desired
     end
 
-    def handle_input(input)
-      input.chomp!
-      Actor[:edge_router].async.send_command_to_server(input, id)
-    end
-
     def run
       raise NotImplementedError
     end
 
+    def server
+      Celluloid::Actor[:server]
+    end
+
     def shutdown
       before_shutdown
-      Actor[:edge_router].async.remove_connection(Actor.current)
+      #Actor[:edge_router].async.remove_connection(Actor.current) TODO
     end
 
     def before_shutdown

@@ -1,8 +1,8 @@
 require 'forwardable'
-require "carbonmu/edge_router/edge_connection"
+require "carbonmu/edge_router/interactive_connection"
 
 module CarbonMU
-  class TelnetConnection < EdgeConnection
+  class TelnetConnection < InteractiveConnection
     extend Forwardable
     def_delegators :@socket, :close, :write
 
@@ -23,6 +23,12 @@ module CarbonMU
       info "*** Telnet connection #{id} disconnected"
       close
       terminate
+    end
+
+    def handle_input(input)
+      input.chomp!
+      debug "Received #{input} from Telnet ID #{id}."
+      server.handle_command(input, self)
     end
 
     def before_shutdown

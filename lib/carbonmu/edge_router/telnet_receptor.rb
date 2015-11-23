@@ -1,4 +1,3 @@
-require "celluloid/autostart"
 require "celluloid/io"
 require "carbonmu/edge_router/telnet_connection"
 
@@ -9,9 +8,12 @@ module CarbonMU
 
     finalizer :shutdown
 
+    attr_reader :connections
+
     def initialize(host, port)
       info "*** Starting Telnet receptor on #{host} #{port}."
       @server = Celluloid::IO::TCPServer.new(host, port)
+      @connections = []
       async.run
     end
 
@@ -24,8 +26,7 @@ module CarbonMU
     end
 
     def handle_connection(socket)
-      tc = TelnetConnection.new(socket)
-      Actor[:edge_router].add_connection(tc)
+      @connections << TelnetConnection.new(socket)
     end
   end
 end

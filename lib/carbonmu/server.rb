@@ -1,67 +1,38 @@
-require 'celluloid/io'
-require 'celluloid/zmq'
 require "mongoid"
 require "colorize"
 require "core_ext/string"
 require "carbonmu/internationalization"
 require "carbonmu/game_object"
 require "carbonmu/parser"
-require "carbonmu/connection"
 
 Dir[File.dirname(__FILE__) + '/game_objects/*.rb'].each {|file| require file }
 
 module CarbonMU
   class Server
-    include Celluloid::IO
+    include Celluloid
     include Celluloid::Logger
-    include Celluloid::ZMQ
 
     finalizer :shutdown
 
-    attr_reader :connections, :parser
+    attr_reader :parser
 
     def initialize(standalone = false)
       Internationalization.setup
 
       info "*** Starting CarbonMU game server."
-      CarbonMU.server = Actor.current
 
       @parser = Parser.new
 
       Server.initialize_database
       Server.create_starter_objects
-
-      unless standalone
-        #retrieve_existing_connections
-      end
-    end
-
-    def edge_router
-      Actor[:edge_router].async
     end
 
     def shutdown
       error "Terminating server!"
     end
 
-    def add_connection(connection_id)
-      @connections ||= []
-      c = Connection.new(connection_id)
-      c.player = Player.superadmin #TODO real login
-      @connections << c
-    end
-
-    def remove_connection(connection_id)
-      @connections.delete_if { |c| c.id == connection_id }
-    end
-
-    def handle_command(input, connection_id)
-      connection = @connections.find { |c| c.id == connection_id }
+    def handle_command(input, connection)
       @parser.parse_and_execute(connection, input)
-    end
-
-    def retrieve_existing_connections
-      send_message_to_edge_router(:retrieve_existing_connections)
     end
 
     def self.trigger_reboot

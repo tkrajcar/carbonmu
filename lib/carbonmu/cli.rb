@@ -22,10 +22,6 @@ module CarbonMU
       CarbonMU.start
     end
 
-    def start_server_only
-      CarbonMU.start_server
-    end
-
     def create(game_name)
       FileUtils.mkdir_p("#{game_name}/config")
       gemfile = <<-GEMFILE
@@ -52,7 +48,7 @@ DATABASE
       end
     end
 
-    COMMAND_WHITELIST = ["start", "start_server_only", "create"]
+    COMMAND_WHITELIST = ["start", "create"]
 
     USAGE = <<-USAGE
 Usage: carbonmu start
