@@ -31,8 +31,14 @@ module CarbonMU
       error "Terminating server!"
     end
 
-    def handle_command(input, connection)
-      @parser.parse_and_execute(connection, input)
+    def handle_interactive_command(input, connection)
+      begin
+        @parser.parse_and_execute(connection, input)
+      rescue Exception => e
+        connection.write("Sorry, your command caused a server problem and couldn't be executed.")
+        error "Unhandled Exception in Server: #{e.class} #{e.message}"
+        error e.backtrace.join("\n")
+      end
     end
 
     def self.trigger_reboot

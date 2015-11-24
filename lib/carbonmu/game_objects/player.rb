@@ -31,19 +31,6 @@ module CarbonMU
       find_by(_special: :superadmin_player)
     end
 
-    def notify(message, args = {})
-      CarbonMU.server.notify_player(self, message, args)
-    end
-
-    def notify_raw(message)
-      CarbonMU.server.notify_player_raw(self, message)
-    end
-
-    def translate_message(message, translation_args = {})
-      translation_args = translation_args.merge(locale: locale)
-      Internationalization.t(message, translation_args)
-    end
-
     def authenticate(user_pass)
       Password.new(self.password_hash) == user_pass
     end
