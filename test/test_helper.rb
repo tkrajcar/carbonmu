@@ -13,7 +13,6 @@ include CarbonMU
 
 Dir[File.dirname(__FILE__) + "/support/**/*.rb"].each {|f| require f}
 
-Mongoid.logger.level = ::Logger::DEBUG
-Mongoid.load!("config/database.yml", ENV["MONGOID_ENV"] || :production)
+Mongoid.load!("config/database.yml", ENV["MONGOID_ENV"] || :testing)
 
 DatabaseCleaner.strategy = :truncation

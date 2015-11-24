@@ -20,8 +20,7 @@ task :console do
   require 'carbonmu'
   require 'awesome_print'
   require 'pry'
-  CarbonMU::Server.initialize_database
-#  CarbonMU::Server.create_starter_objects
+  CarbonMU.start_server
   Pry.start CarbonMU
 end
 

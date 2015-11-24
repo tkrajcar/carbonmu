@@ -24,6 +24,7 @@ module CarbonMU
       @parser = Parser.new
       @database = Database.new
       @database.ensure_starter_objects
+      @database.ensure_indexes
     end
 
     def shutdown

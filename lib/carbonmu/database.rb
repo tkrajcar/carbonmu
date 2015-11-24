@@ -5,8 +5,10 @@ module CarbonMU
     include Celluloid::Logger
 
     def initialize
-      Mongoid.logger.level = ::Logger::DEBUG
       Mongoid.load!("config/database.yml", ENV["MONGOID_ENV"] || :production)
+    end
+
+    def ensure_indexes
       begin
         ::Mongoid::Tasks::Database.create_indexes
       rescue Moped::Errors::ConnectionFailure => e
