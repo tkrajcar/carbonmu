@@ -40,46 +40,5 @@ module CarbonMU
         error e.backtrace.join("\n")
       end
     end
-
-    def self.trigger_reboot
-      Actor[:server].send_reboot_message_to_edge_router
-    end
-
-    def send_reboot_message_to_edge_router
-      send_message_to_edge_router(:reboot)
-    end
-
-    def players
-      connections.collect(&:player).uniq
-    end
-
-    def write_to_connection_raw(connection, message)
-      edge_router.write(connection.id, message)
-    end
-
-    def close_connection(connection_id)
-      edge_router.remove_connection(connection_id)
-    end
-
-    def notify_all_players(message, args = {})
-      players.each { |p| notify_player(p, message, args) }
-    end
-
-    def notify_all_players_raw(message)
-      players.each { |p| notify_player_raw(p, message) }
-    end
-
-    def notify_player(player, message, args = {})
-      notify_player_raw(player, player.translate_message(message, args))
-    end
-
-    def notify_player_raw(player, message)
-      debug "Notifying player #{player} with #{message}"
-      connections_for_player(player).each { |c| write_to_connection_raw(c, message)}
-    end
-
-    def connections_for_player(player)
-      connections.select { |c| c.player == player }
-    end
   end
 end
