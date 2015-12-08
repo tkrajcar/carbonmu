@@ -35,4 +35,26 @@ class CommandTest < Minitest::Test
     t = TestCommand.new(@context)
     assert_equal t.instance_variable_get(:@foo), value
   end
+
+  def test_response_raw_method
+    message = "Oh hello."
+    connection = mock("Connection")
+    @context.stubs(:connection).returns(connection)
+    connection.expects(:write).with(message)
+
+    t = TestCommand.new(@context)
+    t.response_raw message
+  end
+
+  def test_response_method
+    message = "Oh hello."
+    translation_args = { foo: "bar" }
+    connection = mock("Connection")
+    @context.stubs(:connection).returns(connection)
+
+    connection.expects(:write_translated).with(message, translation_args)
+
+    t = TestCommand.new(@context)
+    t.response message, translation_args
+  end
 end

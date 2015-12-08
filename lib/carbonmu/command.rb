@@ -33,5 +33,13 @@ module CarbonMU
     def execute
       raise NotImplementedError
     end
+
+    def response(message, args = {})
+      @context.connection.write_translated(message, args)
+    end
+
+    def response_raw(message)
+      @context.connection.write(message)
+    end
   end
 end

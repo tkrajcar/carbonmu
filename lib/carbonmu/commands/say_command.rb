@@ -4,7 +4,7 @@ module CarbonMU
     syntax /^do (?<text>.*)/
 
     def execute
-      CarbonMU.server.notify_all_players("emits.say", {name: @player.name, message: @params[:text].light_white})
+      response "emits.say", {name: "TODO Name", message: @params[:text].light_white} # Just a response for now, needs to be an emit.
     end
   end
 end

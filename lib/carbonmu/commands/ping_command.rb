@@ -3,7 +3,7 @@ module CarbonMU
     syntax "ping"
 
     def execute
-      @connection.write "PONG"
+      response_raw "PONG"
     end
   end
 end
