@@ -18,7 +18,8 @@ module CarbonMU
 
     def run
       info "*** Received telnet connection #{id} from #{socket.addr[2]}"
-      @player = Player.first
+      @player = Player.first # TODO after signin
+      CarbonMU.edge_router.connected_players[@player.id] << self # TODO after signin
       write "Connected. Your ID is #{id}\n"
       loop do
         async.handle_input(read)

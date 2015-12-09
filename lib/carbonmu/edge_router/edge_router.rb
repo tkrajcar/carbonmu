@@ -8,12 +8,14 @@ module CarbonMU
     # finalizer :shutdown TODO
 
     attr_reader :receptors
+    attr_reader :connected_players
 
     def initialize
       info "*** Starting CarbonMU edge router."
 
       @receptors = []
       @receptors << TelnetReceptor.new("0.0.0.0", 8421)
+      @connected_players = Hash.new([])
     end
 
     def shutdown
@@ -27,12 +29,8 @@ module CarbonMU
       start_server
     end
 
-    def connections_for_player(player)
-      all_connections.find_all { |connection| connection.player == player }
-    end
-
-    def all_connections
-      @receptors.collect(&:connections).flatten
+    def connections_for_player(player_id)
+      @connected_players[player_id]
     end
   end
 end

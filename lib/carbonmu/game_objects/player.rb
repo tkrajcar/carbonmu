@@ -37,7 +37,7 @@ module CarbonMU
     end
 
     def connections
-      CarbonMU.edge_router.connections_for_player(self)
+      CarbonMU.edge_router.connections_for_player(_id)
     end
 
     def self.superadmin
