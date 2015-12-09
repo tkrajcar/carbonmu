@@ -12,7 +12,7 @@ module CarbonMU
     include Mongoid::Document
     include Mongoid::Timestamps
 
-    attr_accessor        :password
+    attr_accessor :password
 
     field :email,         :type => String
     field :password_hash, :type => String
@@ -25,6 +25,19 @@ module CarbonMU
 
     def default_location
       self.location ||= Room.starting
+    end
+
+    def notify(message, args = {})
+      message_translated = Internationalization.t(message, args.merge(locale: locale))
+      notify_raw(message_translated)
+    end
+
+    def notify_raw(message)
+      connections.each { |connection| connection.write(message) }
+    end
+
+    def connections
+      CarbonMU.edge_router.connections_for_player(self)
     end
 
     def self.superadmin

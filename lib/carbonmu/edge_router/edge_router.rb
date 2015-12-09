@@ -26,5 +26,13 @@ module CarbonMU
       Process.kill("TERM", @current_server_pid)
       start_server
     end
+
+    def connections_for_player(player)
+      all_connections.find_all { |connection| connection.player == player }
+    end
+
+    def all_connections
+      @receptors.collect(&:connections).flatten
+    end
   end
 end

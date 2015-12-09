@@ -37,5 +37,9 @@ module CarbonMU
     configure_dcell_node
     Server.supervise_as :server
   end
+
+  def self.edge_router
+    Celluloid::Actor[:edge_router]
+  end
 end
 

@@ -38,9 +38,9 @@ class CommandTest < Minitest::Test
 
   def test_response_raw_method
     message = "Oh hello."
-    connection = mock("Connection")
-    @context.stubs(:connection).returns(connection)
-    connection.expects(:write).with(message)
+    player = mock("Player")
+    @context.stubs(:player).returns(player)
+    player.expects(:notify_raw).with(message)
 
     t = TestCommand.new(@context)
     t.response_raw message
@@ -49,10 +49,10 @@ class CommandTest < Minitest::Test
   def test_response_method
     message = "Oh hello."
     translation_args = { foo: "bar" }
-    connection = mock("Connection")
-    @context.stubs(:connection).returns(connection)
+    player = mock("Player")
+    @context.stubs(:player).returns(player)
 
-    connection.expects(:write_translated).with(message, translation_args)
+    player.expects(:notify).with(message, translation_args)
 
     t = TestCommand.new(@context)
     t.response message, translation_args

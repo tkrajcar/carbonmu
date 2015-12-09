@@ -35,11 +35,11 @@ module CarbonMU
     end
 
     def response(message, args = {})
-      @context.connection.write_translated(message, args)
+      @context.player.notify(message, args)
     end
 
     def response_raw(message)
-      @context.connection.write(message)
+      @context.player.notify_raw(message)
     end
   end
 end
