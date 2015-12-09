@@ -18,6 +18,7 @@ module CarbonMU
 
     def run
       info "*** Received telnet connection #{id} from #{socket.addr[2]}"
+      @player = Player.first
       write "Connected. Your ID is #{id}\n"
       loop do
         async.handle_input(read)
