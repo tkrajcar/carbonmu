@@ -80,7 +80,7 @@ these instructions, they're suboptimal.
 
 You will need ZeroMQ 3.x (4.1.x does not currently work, due to underlying issues in CarbonMU's dependencies), and MongoDB.
 
-Clone the repo, start Mongo, bundle and run `rake console` to open an interactive
+Clone the repo, start Mongo and Redis, bundle and run `rake console` to open an interactive
 game console.
 
 You can start a server with `carbonmu start`.
