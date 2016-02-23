@@ -1,3 +1,4 @@
+require 'bundler/setup'
 require 'carbonmu/version'
 require 'rake/testtask'
 
