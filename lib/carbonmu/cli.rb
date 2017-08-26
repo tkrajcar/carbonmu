@@ -27,7 +27,7 @@ module CarbonMU
       gemfile = <<-GEMFILE
 source 'https://rubygems.org'
 
-gem 'carbonmu', '~> #{CarbonMU::VERSION}'
+gem 'carbonmu', path: '..'
       GEMFILE
       database = <<-DATABASE
 production:
