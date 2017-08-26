@@ -33,7 +33,6 @@ EOF
   s.add_development_dependency "minitest-reporters"
   s.add_development_dependency "mocha", "~> 1.1.0"
 
-  s.add_development_dependency "guard"
   s.add_development_dependency "guard-minitest"
 
   s.add_development_dependency "database_cleaner", "~> 1.3.0"
